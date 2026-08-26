@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calendario dei Corsi — A.A. 2026/2027</title>
+<style>
+  :root{
+    --navy:#122A43;
+    --navy-2:#1B3A5C;
+    --ink:#1B2430;
+    --ink-soft:#4B5768;
+    --line:#DDE3EA;
+    --paper:#FFFFFF;
+    --canvas:#F3F5F8;
+    --gold:#9C7A34;
+    --gold-soft:#F4EDDC;
+    --online:#2A7D6E;
+    --online-bg:#E7F3F0;
+    --presenza:#5B4A94;
+    --presenza-bg:#EDEAF7;
+    --warn:#8A5A12;
+    --warn-bg:#FBF0DF;
+    --warn-line:#E4C48A;
+    --radius-sm:6px;
+    --radius:9px;
+    --shadow:0 1px 2px rgba(18,42,67,0.06), 0 4px 14px rgba(18,42,67,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --navy:#0E1E30;
+      --navy-2:#16314C;
+      --ink:#E8ECF1;
+      --ink-soft:#A6B0BE;
+      --line:#2A3644;
+      --paper:#161F2B;
+      --canvas:#0F1620;
+      --gold:#D2AE64;
+      --gold-soft:#2A2418;
+      --online-bg:#12291F;
+      --presenza-bg:#231E38;
+      --warn-bg:#2C2210;
+      --warn-line:#5A4620;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    background:var(--canvas);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------------- Header ---------------- */
+  header{
+    background:linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+    color:#F3F6FA;
+    padding:0;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{
+    max-width:1180px;
+    margin:0 auto;
+    padding:34px 24px 28px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .crest{
+    flex:0 0 auto;
+    width:52px; height:52px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    border:1.5px solid rgba(210,174,100,0.55);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .crest svg{ width:26px; height:26px; }
+  .header-text h1{
+    margin:0 0 3px;
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:1.7rem;
+    letter-spacing:.2px;
+  }
+  .header-text p{
+    margin:0;
+    font-size:.86rem;
+    letter-spacing:.03em;
+    color:#C9D3E0;
+    text-transform:uppercase;
+  }
+
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding:28px 22px 70px;
+  }
+
+  .panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:24px 26px;
+    margin-bottom:24px;
+  }
+  .panel-title{
+    font-family:var(--serif);
+    font-size:1.02rem;
+    font-weight:600;
+    color:var(--navy);
+    margin:0 0 16px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .panel-title::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+    margin-left:6px;
+  }
+
+  .banner{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:var(--warn-bg);
+    color:var(--warn);
+    border:1px solid var(--warn-line);
+    border-radius:var(--radius-sm);
+    padding:12px 14px;
+    margin-bottom:20px;
+    font-size:.86rem;
+  }
+  .banner strong{display:block; margin-bottom:2px;}
+
+  .filters{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+    gap:16px;
+    align-items:start;
+  }
+  #numlingue-field-wrap{ display:contents; }
+  .field-wide{ grid-column: span 2; min-width:260px; }
+  .lingue-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:16px;
+    margin-top:16px;
+  }
+  .lingue-row:empty{ margin-top:0; }
+  .lingue-row .field{
+    flex:1 1 200px;
+    min-width:170px;
+  }
+  .field label{
+    display:block;
+    font-size:.72rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--ink-soft);
+    margin-bottom:7px;
+  }
+  select{
+    width:100%;
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    border:1px solid var(--line);
+    background:var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%234B5768' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center;
+    color:var(--ink);
+    font-size:.95rem;
+    font-family:var(--sans);
+    appearance:none;
+    padding-right:32px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  select:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+  }
+  select:focus{
+    outline:none;
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px var(--gold-soft);
+  }
+  select:not(:disabled):hover{
+    border-color:var(--navy-2);
+  }
+  .field-hint{
+    font-size:.72rem;
+    color:var(--ink-soft);
+    margin-top:5px;
+    font-style:italic;
+  }
+
+  .meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px solid var(--line);
+  }
+  #status{
+    font-size:.88rem;
+    color:var(--ink);
+  }
+  #status strong{ color:var(--navy); }
+  #freshness{
+    font-size:.72rem;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+
+  /* ---------------- Results ---------------- */
+  .days{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:16px;
+  }
+  @media (max-width: 980px){ .days{grid-template-columns:repeat(2, 1fr);} }
+  @media (max-width: 620px){ .days{grid-template-columns:1fr;} }
+
+  .day-col h2{
+    font-family:var(--serif);
+    color:var(--navy);
+    text-align:left;
+    font-size:1.0rem;
+    font-weight:600;
+    margin:0 0 12px;
+    padding:0 0 8px;
+    border-bottom:2px solid var(--navy);
+  }
+  .day-col h2 .count-pill{
+    float:right;
+    background:var(--gold-soft);
+    color:var(--gold);
+    border:1px solid var(--gold);
+  }
+
+  .course-card{
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--navy-2);
+    border-radius:var(--radius-sm);
+    padding:12px 14px 13px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .course-card.online{ border-left-color:var(--online); }
+  .course-card.presenza{ border-left-color:var(--presenza); }
+
+  .course-card h3{
+    margin:0 0 6px;
+    font-size:.92rem;
+    font-weight:700;
+    line-height:1.32;
+    color:var(--ink);
+  }
+  .course-lang-tag{
+    display:inline-block;
+    font-size:.66rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    color:var(--navy-2);
+    background:var(--canvas);
+    border:1px solid var(--line);
+    padding:1px 7px;
+    border-radius:999px;
+    margin-bottom:6px;
+  }
+  .course-meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 14px;
+    margin:4px 0 0;
+  }
+  .course-meta{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .course-meta .ic{ opacity:.75; }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:999px;
+    margin-top:9px;
+  }
+  .badge::before{
+    content:"";
+    width:6px; height:6px;
+    border-radius:50%;
+    background:currentColor;
+  }
+  .badge.online{ color:var(--online); background:var(--online-bg); }
+  .badge.presenza{ color:var(--presenza); background:var(--presenza-bg); }
+
+  .course-note{
+    font-size:.75rem;
+    color:var(--ink-soft);
+    margin-top:7px;
+    padding-top:7px;
+    border-top:1px dashed var(--line);
+  }
+  .course-note strong{ color:var(--ink); font-weight:600; }
+
+  .empty-day{
+    font-size:.8rem;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:22px 6px;
+    border:1px dashed var(--line);
+    border-radius:var(--radius-sm);
+    background:var(--canvas);
+  }
+  .placeholder{
+    text-align:center;
+    padding:60px 16px;
+    color:var(--ink-soft);
+    font-size:.96rem;
+  }
+
+  footer{
+    text-align:center;
+    font-size:.76rem;
+    color:var(--ink-soft);
+    padding:26px 20px 34px;
+    border-top:1px solid var(--line);
+    margin-top:6px;
+  }
+
+  .count-pill{
+    display:inline-block;
+    font-size:.68rem;
+    font-weight:700;
+    padding:1px 8px;
+    border-radius:999px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+
+  #reload-btn{
+    background:var(--paper);
+    border:1px solid var(--warn-line);
+    color:var(--warn);
+    font-size:.74rem;
+    font-weight:600;
+    padding:4px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    margin-left:8px;
+  }
+  #reload-btn:hover{ background:var(--warn-bg); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="crest" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#D2AE64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M3 9.5h18"></path>
+        <path d="M8 3v4M16 3v4"></path>
+        <path d="M7.5 13.5h3M13.5 13.5h3M7.5 17h3M13.5 17h3"></path>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Calendario dei Corsi</h1>
+      <p>Anno Accademico 2026/2027 · Primo · Secondo · Terzo Anno</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="panel">
+    <h2 class="panel-title">Il tuo profilo</h2>
+    <div id="banner-slot"></div>
+    <div class="filters" id="filters">
+      <div class="field">
+        <label for="anno">Anno di corso</label>
+        <select id="anno">
+          <option value="">— seleziona —</option>
+        </select>
+      </div>
+      <div class="field field-wide">
+        <label for="indirizzo">Indirizzo</label>
+        <select id="indirizzo" disabled>
+          <option value="">— seleziona prima l'anno —</option>
+        </select>
+      </div>
+      <div id="numlingue-field-wrap">
+        <div class="field" id="numlingue-field" style="display:none;">
+          <label for="numlingue">Quante lingue segui?</label>
+          <select id="numlingue">
+            <option value="">— seleziona —</option>
+            <option value="2">2 lingue</option>
+            <option value="3">3 lingue (Mediazione linguistica in tre lingue)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="lingue-row" id="lingue-slot"></div>
+    <div class="meta-row">
+      <div id="status"></div>
+      <div id="freshness"></div>
+    </div>
+  </section>
+
+  <section class="panel" id="results-panel">
+    <h2 class="panel-title">Il tuo orario settimanale</h2>
+    <div id="results">
+      <p class="placeholder">Caricamento dati in corso…</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Dati aggiornati direttamente dalla segreteria didattica. In caso di dubbi su indirizzo, orario o docente, verifica comunque con la segreteria.
+</footer>
+
+<script>
+/* =========================================================================
+   CONFIGURAZIONE — l'UNICA cosa da modificare nel codice, una volta sola.
+   Inserisci qui il link CSV del Google Sheet gestito dalla segreteria
+   (vedi ISTRUZIONI.md per i passaggi). Dopo questo passaggio iniziale,
+   ogni modifica futura ai corsi si fa SOLO nel foglio Google, senza più
+   toccare questo file.
+
+   Usiamo il formato "gviz/tq" (Google Visualization API) invece del link
+   di "Pubblica sul web" perché quest'ultimo, quando viene letto dal
+   browser con fetch() da un altro sito (come GitHub Pages), viene spesso
+   bloccato dal browser per motivi di sicurezza (CORS) — anche se il link
+   in sé è corretto e pubblico. Il formato gviz/tq è pensato apposta per
+   essere letto da pagine web esterne ed evita questo problema.
+
+   Richiede DUE cose sul foglio Google (vedi ISTRUZIONI.md):
+   1) File → Condividi → Pubblica sul web (come già fatto).
+   2) File → Condividi → Condivisione generale → "Chiunque abbia il link"
+      con ruolo "Visualizzatore" (passaggio SEPARATO dal punto 1, spesso
+      dimenticato: la pubblicazione sul web non basta per questo formato).
+
+   Formato del link:
+   "https://docs.google.com/spreadsheets/d/ID_DEL_FOGLIO/gviz/tq?tqx=out:csv&gid=NUMERO_SCHEDA"
+   (ID_DEL_FOGLIO è la parte lunga di lettere/numeri nel link normale del
+   foglio, tra "/d/" e "/edit"; NUMERO_SCHEDA è il numero dopo "gid=" nello
+   stesso link.)
+   ========================================================================= */
+const DATA_SOURCE_URL = "https://docs.google.com/spreadsheets/d/1vSXutv2sD-RgxVWn6e-F_bvR6r8Zm0jFFeTvpg5dqaI/gviz/tq?tqx=out:csv&gid=243963684";
+/* ========================================================================= */
+
+const GIORNI = ["Lunedì", "Martedì", "Mercoledì", "Giovedì", "Venerdì"];
+const GIORNO_ORDINE = {"Lunedì":1, "Martedì":2, "Mercoledì":3, "Giovedì":4, "Venerdì":5};
+const INDIRIZZO_TRE_LINGUE = "Mediazione linguistica in tre lingue";
+
+// Snapshot di riserva: usato solo se DATA_SOURCE_URL non è configurato,
+// oppure se il foglio online non è raggiungibile in questo momento.
+const FALLBACK_DATA = [{"id": "P01", "anno": "Primo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "09:00–11:00", "oraSort": 540, "titolo": "Russo - Fondamenti della lingua I", "lingua": "Russo", "livello": null, "docente": "Mikshina", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "dal 11/09 (no lezione il 26/10)"}, {"id": "P02", "anno": "Primo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "09:30–11:00", "oraSort": 570, "titolo": "Francese - Tavoli di negoziazione e trattativa linguistica", "lingua": "Francese", "livello": null, "docente": "Oliva", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 14/09 (no lezione il 26/10)"}, {"id": "P03", "anno": "Primo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "12:00–15:00", "oraSort": 720, "titolo": "Inglese - Approfondimento della lingua I + Tecniche e strategie di scrittura", "lingua": "Inglese", "livello": null, "docente": "Prezioso / Razavi", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 14/09"}, {"id": "P04", "anno": "Primo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "15:30–18:30", "oraSort": 930, "titolo": "Psicologia del consumatore e dell'acquisto", "lingua": null, "livello": null, "docente": "Pierguidi", "modalita": "In presenza", "indirizzi": ["Marketing e comunicazione", "Fashion & Luxury Management"], "gruppo": null, "note": null}, {"id": "P05", "anno": "Primo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "16:00–19:15", "oraSort": 960, "titolo": "Metodologia della ricerca documentale", "lingua": null, "livello": null, "docente": "Giorgi", "modalita": "Online", "indirizzi": ["Mediazione linguistica in tre lingue"], "gruppo": null, "note": "online da 28/09"}, {"id": "P06", "anno": "Primo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "16:30–19:20", "oraSort": 990, "titolo": "Analisi della geopolitica internazionale", "lingua": null, "livello": null, "docente": "Damjanovski", "modalita": "In presenza", "indirizzi": ["Relazioni internazionali e diplomatiche"], "gruppo": null, "note": null}, {"id": "P07", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "da confermare", "oraSort": 9999, "titolo": "Cinese (da B1) - Tavoli di negoziazione", "lingua": "Cinese", "livello": "da B1", "docente": "Macchi", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "giorno e orario da confermare"}, {"id": "P08", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "10:00–13:00", "oraSort": 600, "titolo": "Psicologia clinico-forense e valutativa", "lingua": null, "livello": null, "docente": "Currò", "modalita": "In presenza", "indirizzi": ["Criminologia investigativa e forense"], "gruppo": null, "note": null}, {"id": "P09", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "10:00–12:00", "oraSort": 600, "titolo": "Tedesco – Uso critico e applicato del testo", "lingua": "Tedesco", "livello": null, "docente": "Bardeck", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P10", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "13:30–14:30", "oraSort": 810, "titolo": "Spagnolo – Uso critico e applicato del testo", "lingua": "Spagnolo", "livello": null, "docente": "Semeghini", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P11", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "14:30–15:30", "oraSort": 870, "titolo": "Spagnolo – Tavoli di negoziazione", "lingua": "Spagnolo", "livello": null, "docente": "Magnanego", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 15/09"}, {"id": "P12", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "15:30–16:30", "oraSort": 930, "titolo": "Spagnolo – Strategie di memorizzazione e note-taking", "lingua": "Spagnolo", "livello": null, "docente": "Magnanego", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 15/09"}, {"id": "P13", "anno": "Primo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "16:30–18:00", "oraSort": 990, "titolo": "Francese - Approfondimento della lingua I + Tecniche e strategie di scrittura", "lingua": "Francese", "livello": null, "docente": "Bariller", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P14", "anno": "Primo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "08:30–11:10", "oraSort": 510, "titolo": "Marketing", "lingua": null, "livello": null, "docente": "de Leonardis", "modalita": "In presenza", "indirizzi": ["Marketing e comunicazione", "Fashion & Luxury Management", "Management del turismo e dei beni culturali"], "gruppo": null, "note": null}, {"id": "P15", "anno": "Primo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "09:00–13:00", "oraSort": 540, "titolo": "Relazioni internazionali e governance globale", "lingua": null, "livello": null, "docente": "Mancini", "modalita": "In presenza", "indirizzi": ["Relazioni internazionali e diplomatiche"], "gruppo": null, "note": null}, {"id": "P16", "anno": "Primo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "13:30–15:30", "oraSort": 810, "titolo": "Spagnolo – Approfondimento della lingua I + Tecniche di scrittura", "lingua": "Spagnolo", "livello": null, "docente": "Acero", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P17", "anno": "Primo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "15:30–18:30", "oraSort": 930, "titolo": "Storia delle relazioni internazionali e diplomatiche", "lingua": null, "livello": null, "docente": "Milli", "modalita": "In presenza", "indirizzi": ["Relazioni internazionali e diplomatiche"], "gruppo": null, "note": null}, {"id": "P18", "anno": "Primo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "15:30–18:30", "oraSort": 930, "titolo": "Comunicazione di impresa", "lingua": null, "livello": null, "docente": "Bonafoni", "modalita": "In presenza", "indirizzi": ["Marketing e comunicazione"], "gruppo": null, "note": null}, {"id": "P19", "anno": "Primo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "09:00–11:00 (gr.2) / 11:00–13:00 (gr.1)", "oraSort": 540, "titolo": "Inglese – Uso critico e applicato del testo", "lingua": "Inglese", "livello": null, "docente": "Oliveri", "modalita": "In presenza", "indirizzi": null, "gruppo": "gr.1 e gr.2 (orari invertiti)", "note": "dal 17/09 a settimane alterne"}, {"id": "P20", "anno": "Primo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "09:30–11:00 (gr.1) / 11:00–12:30 (gr.2)", "oraSort": 570, "titolo": "Inglese – Tavoli di negoziazione", "lingua": "Inglese", "livello": null, "docente": "Borghi", "modalita": "In presenza", "indirizzi": null, "gruppo": "gr.1 e gr.2 (orari invertiti)", "note": null}, {"id": "P21", "anno": "Primo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "09:30–11:00 (gr.2) / 11:00–12:30 (gr.1)", "oraSort": 570, "titolo": "Inglese – Strategie di memorizzazione e note-taking", "lingua": "Inglese", "livello": null, "docente": "Valente", "modalita": "In presenza", "indirizzi": null, "gruppo": "gr.1 e gr.2 (orari invertiti)", "note": "a settimane alterne"}, {"id": "P22", "anno": "Primo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "14:30–17:30", "oraSort": 870, "titolo": "Storia delle arti e delle culture visive", "lingua": null, "livello": null, "docente": "Galli", "modalita": "In presenza", "indirizzi": ["Management del turismo e dei beni culturali"], "gruppo": null, "note": null}, {"id": "P23", "anno": "Primo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "14:30–17:30", "oraSort": 870, "titolo": "Elementi di diritto penale e penitenziario", "lingua": null, "livello": null, "docente": "Di Pietro", "modalita": "In presenza", "indirizzi": ["Criminologia investigativa e forense"], "gruppo": null, "note": null}, {"id": "P24", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "09:00–12:00", "oraSort": 540, "titolo": "Tedesco – Approfondimento della lingua I + Tecniche di scrittura", "lingua": "Tedesco", "livello": null, "docente": "Giacoma", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P25", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "09:00–11:00", "oraSort": 540, "titolo": "Russo - Fondamenti della lingua I", "lingua": "Russo", "livello": null, "docente": "Mikshina", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "inizia 11/09"}, {"id": "P26", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "09:30–12:30", "oraSort": 570, "titolo": "Sociologia della devianza e criminogenesi", "lingua": null, "livello": null, "docente": "Baglioni", "modalita": "In presenza", "indirizzi": ["Criminologia investigativa e forense"], "gruppo": null, "note": null}, {"id": "P27", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "12:00–13:00", "oraSort": 720, "titolo": "Cinese (da B1) – Approfondimento della lingua I + Tecniche di scrittura", "lingua": "Cinese", "livello": "da B1", "docente": "Zhang", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P28", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "15:00–16:00", "oraSort": 900, "titolo": "Cinese (da B1) – Strategie di memorizzazione e note-taking", "lingua": "Cinese", "livello": "da B1", "docente": "Leoni", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "da 02/10"}, {"id": "P29", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "14:00–15:30", "oraSort": 840, "titolo": "Francese – Strategie di memorizzazione e note-taking", "lingua": "Francese", "livello": null, "docente": "Bendoni", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "P30", "anno": "Primo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "13:00–14:00 e 15:30–18:00", "oraSort": 780, "titolo": "Cinese (da A0) - Fondamenti della lingua I", "lingua": "Cinese", "livello": "da A0", "docente": "Bozzano", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S01", "anno": "Secondo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "09:00–11:00", "oraSort": 540, "titolo": "Arabo - Laboratorio applicato di traduzione intermedio", "lingua": "Arabo", "livello": null, "docente": "Boella", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S02", "anno": "Secondo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "10:00–11:30", "oraSort": 600, "titolo": "Russo - Laboratorio applicato di interpretazione intermedio", "lingua": "Russo", "livello": null, "docente": "Saturni", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S03", "anno": "Secondo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "09:00–12:00", "oraSort": 540, "titolo": "Cinese - Cultura, civiltà e istituzioni", "lingua": "Cinese", "livello": null, "docente": "Picerni", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S04", "anno": "Secondo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "13:30–15:00", "oraSort": 810, "titolo": "Francese - Laboratorio applicato di traduzione intermedio", "lingua": "Francese", "livello": null, "docente": "Oliva", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 14/09"}, {"id": "S05", "anno": "Secondo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "15:15–18:15", "oraSort": 915, "titolo": "Inglese - Cultura, civiltà e istituzioni", "lingua": "Inglese", "livello": null, "docente": "Andreani", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "inizio 14/09"}, {"id": "S06", "anno": "Secondo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "16:00–19:15", "oraSort": 960, "titolo": "Metodologia della ricerca documentale", "lingua": null, "livello": null, "docente": "Giorgi", "modalita": "Online", "indirizzi": ["Mediazione linguistica in tre lingue"], "gruppo": null, "note": "online dal 28/09"}, {"id": "S07", "anno": "Secondo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "09:00-11:00", "oraSort": 540, "titolo": "Tedesco – Laboratorio applicato di traduzione intermedio", "lingua": "Tedesco", "livello": null, "docente": "Groeger", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S08", "anno": "Secondo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "09:00–12:00", "oraSort": 540, "titolo": "Russo - Lingua 2", "lingua": "Russo", "livello": null, "docente": "Mikshina", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S09", "anno": "Secondo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "10:00–12:00", "oraSort": 600, "titolo": "Spagnolo – Laboratorio applicato di interpretazione intermedio", "lingua": "Spagnolo", "livello": null, "docente": "Semeghini", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S10", "anno": "Secondo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "12:00–14:00", "oraSort": 720, "titolo": "Spagnolo – Laboratorio applicato di traduzione intermedio", "lingua": "Spagnolo", "livello": null, "docente": "Magnanego", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "inizio 15/09"}, {"id": "S11", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "09:30–12:30", "oraSort": 570, "titolo": "Gestione e direzione di eventi", "lingua": null, "livello": null, "docente": "Bonafoni", "modalita": "In presenza", "indirizzi": ["Fashion & Luxury Management", "Management per turismo, arte e cultura", "Marketing e comunicazione"], "gruppo": null, "note": null}, {"id": "S12", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "09:30–12:30", "oraSort": 570, "titolo": "Analisi del cybercrime & security", "lingua": null, "livello": null, "docente": "Biasiotti", "modalita": "In presenza", "indirizzi": ["Relazioni internazionali e diplomatiche", "Criminologia e Cybersecurity"], "gruppo": null, "note": null}, {"id": "S13", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "14:00–15:30", "oraSort": 840, "titolo": "Arabo – Laboratorio applicato di interpretazione intermedio", "lingua": "Arabo", "livello": null, "docente": "Gadri", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S14", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "13:00–15:00", "oraSort": 780, "titolo": "Cinese - Laboratorio applicato di traduzione intermedio", "lingua": "Cinese", "livello": null, "docente": "Macchi", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S15", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "15:30–18:00", "oraSort": 930, "titolo": "Spagnolo - Lingua 2", "lingua": "Spagnolo", "livello": null, "docente": "Acero", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S16", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "16:00–18:00", "oraSort": 960, "titolo": "Russo – Laboratorio applicato di traduzione intermedio", "lingua": "Russo", "livello": null, "docente": "Sudakova", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S17", "anno": "Secondo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "16:00–18:00", "oraSort": 960, "titolo": "Tedesco - Lingua 2", "lingua": "Tedesco", "livello": null, "docente": "Aurigi-Eberhart", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S18", "anno": "Secondo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "09:00–12:10", "oraSort": 540, "titolo": "Inglese - Lingua 2", "lingua": "Inglese", "livello": null, "docente": "Sandford", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "inizio 1 ottobre"}, {"id": "S19", "anno": "Secondo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "13:00–15:00", "oraSort": 780, "titolo": "Francese - Lingua 2", "lingua": "Francese", "livello": null, "docente": "Vandamme", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S20", "anno": "Secondo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "13:30–15:30", "oraSort": 810, "titolo": "Inglese – Laboratorio applicato di interpretazione intermedio (GR1)", "lingua": "Inglese", "livello": null, "docente": "Borghi", "modalita": "In presenza", "indirizzi": null, "gruppo": "GR1", "note": null}, {"id": "S21", "anno": "Secondo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "15:30–17:30", "oraSort": 930, "titolo": "Inglese – Laboratorio applicato di interpretazione intermedio (GR2)", "lingua": "Inglese", "livello": null, "docente": "Borghi", "modalita": "In presenza", "indirizzi": null, "gruppo": "GR2", "note": null}, {"id": "S22", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "08:30–10:00", "oraSort": 510, "titolo": "Arabo - Lingua 2", "lingua": "Arabo", "livello": null, "docente": "Baccini", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S23", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "09:00–12:00", "oraSort": 540, "titolo": "Food, Wine & Hospitality Management", "lingua": null, "livello": null, "docente": "Rosati", "modalita": "In presenza", "indirizzi": ["Management per turismo, arte e cultura"], "gruppo": null, "note": null}, {"id": "S24", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "10:30–12:00", "oraSort": 630, "titolo": "Arabo - Laboratorio applicato di interpretazione intermedio", "lingua": "Arabo", "livello": null, "docente": "Gadri", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S25", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "12:00–14:00", "oraSort": 720, "titolo": "Francese – Laboratorio applicato di interpretazione intermedio", "lingua": "Francese", "livello": null, "docente": "Bendoni", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S26", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "13:00–15:00", "oraSort": 780, "titolo": "Tedesco - Laboratorio applicato di interpretazione intermedio", "lingua": "Tedesco", "livello": null, "docente": "Bertazzoni", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "online inizio 25/09"}, {"id": "S27", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "14:00–15:30", "oraSort": 840, "titolo": "Cinese - Lingua 2", "lingua": "Cinese", "livello": null, "docente": "Bozzano", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "S28", "anno": "Secondo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "15:30-17:30", "oraSort": 930, "titolo": "Inglese – Laboratorio applicato di traduzione intermedio", "lingua": "Inglese", "livello": null, "docente": "Laurenzi", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T01", "anno": "Terzo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "08:30–10:00", "oraSort": 510, "titolo": "Russo – Laboratorio applicato di interpretazione 3", "lingua": "Russo", "livello": null, "docente": "Saturni", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T02", "anno": "Terzo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "09:00–11:00", "oraSort": 540, "titolo": "Arabo – Laboratorio applicato di interpretazione 3", "lingua": "Arabo", "livello": null, "docente": "Gadri", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T03", "anno": "Terzo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "11:00–13:00", "oraSort": 660, "titolo": "Francese – Laboratorio applicato di traduzione 3", "lingua": "Francese", "livello": null, "docente": "Oliva", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 14/09"}, {"id": "T04", "anno": "Terzo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "13:00–15:00", "oraSort": 780, "titolo": "Arabo – Laboratorio applicato di traduzione 3", "lingua": "Arabo", "livello": null, "docente": "Boella", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T05", "anno": "Terzo Anno", "giorno": "Lunedì", "giornoOrd": 1, "orario": "17:00–19:00", "oraSort": 1020, "titolo": "Inglese - Lingua 3 - tutti", "lingua": "Inglese", "livello": null, "docente": "Grandolfo", "modalita": "Online", "indirizzi": null, "gruppo": "Tutti", "note": "inizia 11/09; più si veda calendario ad hoc"}, {"id": "T06", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "09:00–10:00", "oraSort": 540, "titolo": "Spagnolo – Laboratorio applicato di traduzione 3", "lingua": "Spagnolo", "livello": null, "docente": "Semeghini", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T07", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "11:00–12:00", "oraSort": 660, "titolo": "Spagnolo – Laboratorio applicato di interpretazione 3", "lingua": "Spagnolo", "livello": null, "docente": "Magnanego", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "inizio 15/09"}, {"id": "T08", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "12:00–13:30", "oraSort": 720, "titolo": "Spagnolo – Laboratorio applicato di interpretazione 3", "lingua": "Spagnolo", "livello": null, "docente": "Semeghini", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T09", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "13:30–15:30", "oraSort": 810, "titolo": "Arabo Lingua 3", "lingua": "Arabo", "livello": null, "docente": "Mutlak", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "no lezione 15/09"}, {"id": "T10", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "13:30–15:30", "oraSort": 810, "titolo": "Russo Lingua 3", "lingua": "Russo", "livello": null, "docente": "Sudakova", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "no lezione 15/09"}, {"id": "T11", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "15:00–17:00", "oraSort": 900, "titolo": "Cinese (da A0) - Lingua 3", "lingua": "Cinese", "livello": "da A0", "docente": "Bozzano", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "no lezione 15/09"}, {"id": "T12", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "17:00–18:30", "oraSort": 1020, "titolo": "Cinese (da A0) – Laboratorio applicato di interpretazione 3", "lingua": "Cinese", "livello": "da A0", "docente": "Macchi", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T13", "anno": "Terzo Anno", "giorno": "Martedì", "giornoOrd": 2, "orario": "17:00–19:00", "oraSort": 1020, "titolo": "Tedesco – Laboratorio applicato di traduzione 3", "lingua": "Tedesco", "livello": null, "docente": "Ragazzi", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T14", "anno": "Terzo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "09:00–11:00", "oraSort": 540, "titolo": "Spagnolo Lingua 3", "lingua": "Spagnolo", "livello": null, "docente": "Acero", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T15", "anno": "Terzo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "11:00–13:00", "oraSort": 660, "titolo": "Spagnolo – Laboratorio applicato di traduzione 3", "lingua": "Spagnolo", "livello": null, "docente": "Acero", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T16", "anno": "Terzo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "13:30–15:30", "oraSort": 810, "titolo": "Tedesco Lingua 3", "lingua": "Tedesco", "livello": null, "docente": "Aurigi-Eberhart", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T17", "anno": "Terzo Anno", "giorno": "Mercoledì", "giornoOrd": 3, "orario": "15:30–17:00", "oraSort": 930, "titolo": "Inglese – Laboratorio di traduzione 3 - tutti", "lingua": "Inglese", "livello": null, "docente": "Staton", "modalita": "In presenza", "indirizzi": null, "gruppo": "Tutti", "note": null}, {"id": "T18", "anno": "Terzo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "08:30–10:00", "oraSort": 510, "titolo": "Russo – Laboratorio applicato di traduzione 3", "lingua": "Russo", "livello": null, "docente": "Mikshina", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T19", "anno": "Terzo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "10:00–12:00", "oraSort": 600, "titolo": "Francese Lingua 3", "lingua": "Francese", "livello": null, "docente": "Vandamme", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "no lezione 17/09"}, {"id": "T20", "anno": "Terzo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "13:00–14:30", "oraSort": 780, "titolo": "Inglese – Laboratorio applicato di traduzione 3 - tutti", "lingua": "Inglese", "livello": null, "docente": "Oliveri", "modalita": "In presenza", "indirizzi": null, "gruppo": "Tutti", "note": "dal 17/09 a settimane alterne"}, {"id": "T21", "anno": "Terzo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "13:00–15:00", "oraSort": 780, "titolo": "Inglese – Laboratorio applicato di interpretazione 3 gruppo Valente", "lingua": "Inglese", "livello": null, "docente": "Valente", "modalita": "In presenza", "indirizzi": null, "gruppo": "Gruppo Valente", "note": "dal 10/09 a settimane alterne"}, {"id": "T22", "anno": "Terzo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "14:30–17:00", "oraSort": 870, "titolo": "Inglese – Laboratorio di interpretazione 3 gruppo Oliveri", "lingua": "Inglese", "livello": null, "docente": "Oliveri", "modalita": "In presenza", "indirizzi": null, "gruppo": "Gruppo Oliveri", "note": "dal 17/09 a settimane alterne"}, {"id": "T23", "anno": "Terzo Anno", "giorno": "Giovedì", "giornoOrd": 4, "orario": "15:30–17:30", "oraSort": 930, "titolo": "Tedesco – Laboratorio applicato di interpretazione 3", "lingua": "Tedesco", "livello": null, "docente": "Valente", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": "dal 10/09 a settimane alterne"}, {"id": "T24", "anno": "Terzo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "09:00–11:00", "oraSort": 540, "titolo": "Cinese (da B1) - Laboratorio applicato di interpretazione 3", "lingua": "Cinese", "livello": "da B1", "docente": "Leoni", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": "online dal 02/10"}, {"id": "T25", "anno": "Terzo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "09:00–11:30", "oraSort": 540, "titolo": "Francese – Laboratorio applicato di interpretazione 3", "lingua": "Francese", "livello": null, "docente": "Bendoni", "modalita": "In presenza", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T26", "anno": "Terzo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "14:30–16:30", "oraSort": 870, "titolo": "Cinese (da B1) - Lingua 3", "lingua": "Cinese", "livello": "da B1", "docente": "Zhang", "modalita": "Online", "indirizzi": null, "gruppo": null, "note": null}, {"id": "T27", "anno": "Terzo Anno", "giorno": "Venerdì", "giornoOrd": 5, "orario": "17:00–19:00", "oraSort": 1020, "titolo": "Inglese - Lingua 3 - tutti", "lingua": "Inglese", "livello": null, "docente": "Grandolfo", "modalita": "Online", "indirizzi": null, "gruppo": "Tutti", "note": "inizia 11/09; più si veda calendario ad hoc"}];
+const FALLBACK_TIMESTAMP = "26/08/2026";
+
+let COURSES = [];
+// Stato delle lingue selezionate: fino a 3 slot {lang, livello}
+let langSlots = [{lang:null, livello:null}, {lang:null, livello:null}, {lang:null, livello:null}];
+
+const annoSel = document.getElementById('anno');
+const indirizzoSel = document.getElementById('indirizzo');
+const numLinguaField = document.getElementById('numlingue-field');
+const numLinguaSel = document.getElementById('numlingue');
+const lingueSlotEl = document.getElementById('lingue-slot');
+const statusEl = document.getElementById('status');
+const freshnessEl = document.getElementById('freshness');
+const resultsEl = document.getElementById('results');
+const bannerSlot = document.getElementById('banner-slot');
+
+function showBanner(html){
+  bannerSlot.innerHTML = `<div class="banner">${html}</div>`;
+}
+function clearBanner(){
+  bannerSlot.innerHTML = '';
+}
+
+/* ---------- Parser CSV robusto (gestisce virgolette e virgole nei campi) ---------- */
+function parseCSV(text){
+  const rows = [];
+  let row = [];
+  let field = '';
+  let inQuotes = false;
+  text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+  for (let i = 0; i < text.length; i++){
+    const ch = text[i];
+    if (inQuotes){
+      if (ch === '"'){
+        if (text[i+1] === '"'){ field += '"'; i++; }
+        else { inQuotes = false; }
+      } else {
+        field += ch;
+      }
+    } else {
+      if (ch === '"'){
+        inQuotes = true;
+      } else if (ch === ','){
+        row.push(field); field = '';
+      } else if (ch === '\n'){
+        row.push(field); field = '';
+        rows.push(row); row = [];
+      } else {
+        field += ch;
+      }
+    }
+  }
+  if (field.length > 0 || row.length > 0){
+    row.push(field);
+    rows.push(row);
+  }
+  return rows.filter(r => r.some(c => c.trim() !== ''));
+}
+
+function sortKeyTime(orario){
+  const m = /(\d{1,2}):(\d{2})/.exec(orario || '');
+  return m ? (parseInt(m[1],10)*60 + parseInt(m[2],10)) : 9999;
+}
+
+function rowsToCourses(rows){
+  if (rows.length === 0) return [];
+  const headers = rows[0].map(h => h.trim());
+  const idx = {};
+  headers.forEach((h,i) => idx[h] = i);
+  const required = ["Anno di Corso","Giorno","Orario","Titolo Corso","Docente","Modalità","Indirizzo/i"];
+  for (const req of required){
+    if (!(req in idx)) throw new Error(`Colonna mancante nel foglio dati: "${req}"`);
+  }
+  const get = (cols, name) => (idx[name] !== undefined ? (cols[idx[name]] || '').trim() : '');
+
+  const out = [];
+  for (let i = 1; i < rows.length; i++){
+    const cols = rows[i];
+    if (cols.every(c => (c||'').trim() === '')) continue;
+    const anno = get(cols, "Anno di Corso");
+    const giorno = get(cols, "Giorno");
+    if (!anno || !giorno) continue;
+    const indRaw = get(cols, "Indirizzo/i");
+    const indirizzi = (!indRaw || indRaw.toLowerCase() === 'tutti gli indirizzi')
+      ? null
+      : indRaw.split(';').map(s => s.trim()).filter(Boolean);
+    out.push({
+      id: get(cols, "ID"),
+      anno: anno,
+      giorno: giorno,
+      giornoOrd: GIORNO_ORDINE[giorno] || 99,
+      orario: get(cols, "Orario"),
+      oraSort: sortKeyTime(get(cols, "Orario")),
+      titolo: get(cols, "Titolo Corso"),
+      lingua: get(cols, "Lingua") || null,
+      livello: get(cols, "Livello Lingua") || null,
+      docente: get(cols, "Docente"),
+      modalita: get(cols, "Modalità"),
+      indirizzi: indirizzi,
+      gruppo: get(cols, "Gruppo") || null,
+      note: get(cols, "Note") || null,
+    });
+  }
+  return out;
+}
+
+async function loadData(){
+  if (!DATA_SOURCE_URL){
+    COURSES = FALLBACK_DATA;
+    showBanner(`<div>⚠️ <strong>Nessuna sorgente dati online configurata.</strong>
+      Questa pagina mostra i dati salvati nel codice (aggiornati al ${FALLBACK_TIMESTAMP}).
+      Per collegare il foglio Google gestito dalla segreteria, segui i passaggi in ISTRUZIONI.md.</div>`);
+    freshnessEl.textContent = `Dati statici incorporati nella pagina — ultimo aggiornamento: ${FALLBACK_TIMESTAMP}`;
+    return;
+  }
+  try{
+    const url = DATA_SOURCE_URL + (DATA_SOURCE_URL.includes('?') ? '&' : '?') + 'cachebust=' + Date.now();
+    const resp = await fetch(url, {cache:'no-store'});
+    if (!resp.ok) throw new Error('HTTP ' + resp.status);
+    const text = await resp.text();
+    const rows = parseCSV(text);
+    const parsed = rowsToCourses(rows);
+    if (parsed.length === 0) throw new Error('Il foglio è stato letto ma non contiene righe valide.');
+    COURSES = parsed;
+    clearBanner();
+    const now = new Date();
+    freshnessEl.textContent = `Dati aggiornati dal foglio online alle ${now.toLocaleTimeString('it-IT')} del ${now.toLocaleDateString('it-IT')}.`;
+  } catch (err){
+    console.error('Errore nel caricamento dei dati online:', err);
+    COURSES = FALLBACK_DATA;
+    const errText = (err && err.message) ? String(err.message).replace(/</g,'&lt;') : 'Errore sconosciuto';
+    showBanner(`<div>⚠️ <strong>Impossibile aggiornare i dati dal foglio online in questo momento.</strong>
+      Vengono mostrati i dati salvati nella pagina (aggiornati al ${FALLBACK_TIMESTAMP}).
+      Controlla la connessione o riprova più tardi.
+      <button id="reload-btn">Riprova ora</button>
+      <div style="margin-top:6px; font-size:.72rem; opacity:.75;">Dettaglio tecnico: ${errText}</div></div>`);
+    freshnessEl.textContent = '';
+    const btn = document.getElementById('reload-btn');
+    if (btn) btn.addEventListener('click', init);
+  }
+}
+
+function uniqueSorted(arr){
+  return [...new Set(arr)].sort((a,b)=>a.localeCompare(b, 'it'));
+}
+
+const ANNO_ORDER = ["Primo Anno", "Secondo Anno", "Terzo Anno"];
+
+function populateAnni(){
+  annoSel.innerHTML = '<option value="">— seleziona —</option>';
+  const anni = uniqueSorted(COURSES.map(c => c.anno))
+    .sort((a,b) => ANNO_ORDER.indexOf(a) - ANNO_ORDER.indexOf(b));
+  for (const a of anni){
+    const opt = document.createElement('option');
+    opt.value = a; opt.textContent = a;
+    annoSel.appendChild(opt);
+  }
+}
+
+function coursesForAnno(anno){
+  return COURSES.filter(c => c.anno === anno);
+}
+
+function needsIndirizzo(anno){
+  return coursesForAnno(anno).some(c => (c.indirizzi || []).length > 0);
+}
+
+function populateIndirizzo(anno){
+  indirizzoSel.innerHTML = '';
+  const list = coursesForAnno(anno);
+  const indirizzi = uniqueSorted(list.flatMap(c => c.indirizzi || []));
+  if (indirizzi.length === 0){
+    const opt = document.createElement('option');
+    opt.value = ''; opt.textContent = 'Nessun indirizzo per questo anno (solo lingue)';
+    indirizzoSel.appendChild(opt);
+    indirizzoSel.disabled = true;
+  } else {
+    const opt0 = document.createElement('option');
+    opt0.value=''; opt0.textContent='— seleziona indirizzo —';
+    indirizzoSel.appendChild(opt0);
+    for (const ind of indirizzi){
+      const opt = document.createElement('option');
+      opt.value = ind; opt.textContent = ind;
+      indirizzoSel.appendChild(opt);
+    }
+    indirizzoSel.disabled = false;
+  }
+}
+
+/* Quante lingue deve selezionare lo studente:
+   - se l'anno prevede indirizzi: 3 per "Mediazione linguistica in tre lingue", 2 per tutti gli altri
+   - se l'anno NON prevede indirizzi (es. Terzo Anno): lo decide l'apposito selettore "Quante lingue segui?" */
+function desiredSlotCount(){
+  const anno = annoSel.value;
+  if (!anno) return 0;
+  if (needsIndirizzo(anno)){
+    if (!indirizzoSel.value) return 0;
+    return indirizzoSel.value === INDIRIZZO_TRE_LINGUE ? 3 : 2;
+  }
+  return numLinguaSel.value ? parseInt(numLinguaSel.value, 10) : 0;
+}
+
+function livelliDisponibili(anno, lingua){
+  return uniqueSorted(
+    coursesForAnno(anno).filter(c => c.lingua === lingua && c.livello).map(c => c.livello)
+  );
+}
+
+function renderLinguaSlots(){
+  const anno = annoSel.value;
+  const count = desiredSlotCount();
+  lingueSlotEl.innerHTML = '';
+
+  if (!anno || count === 0){
+    return;
+  }
+
+  const available = uniqueSorted(coursesForAnno(anno).map(c => c.lingua).filter(Boolean));
+
+  for (let i = 0; i < count; i++){
+    const field = document.createElement('div');
+    field.className = 'field';
+    const label = document.createElement('label');
+    label.textContent = `Lingua ${i + 1}${count === 3 ? ' di 3' : ''}`;
+    label.setAttribute('for', `lingua-${i}`);
+    const sel = document.createElement('select');
+    sel.id = `lingua-${i}`;
+    sel.dataset.slot = String(i);
+    sel.className = 'lingua-select';
+
+    const opt0 = document.createElement('option');
+    opt0.value = ''; opt0.textContent = '— seleziona lingua —';
+    sel.appendChild(opt0);
+    for (const lang of available){
+      const usedElsewhere = langSlots.some((s, si) => si !== i && si < count && s.lang === lang);
+      const opt = document.createElement('option');
+      opt.value = lang; opt.textContent = lang;
+      opt.disabled = usedElsewhere;
+      if (langSlots[i].lang === lang) opt.selected = true;
+      sel.appendChild(opt);
+    }
+    field.appendChild(label);
+    field.appendChild(sel);
+    lingueSlotEl.appendChild(field);
+
+    const chosenLang = langSlots[i].lang;
+    if (chosenLang){
+      const livelli = livelliDisponibili(anno, chosenLang);
+      if (livelli.length > 1){
+        const lf = document.createElement('div');
+        lf.className = 'field';
+        const ll = document.createElement('label');
+        ll.textContent = `Livello di partenza (${chosenLang})`;
+        ll.setAttribute('for', `livello-${i}`);
+        const lsel = document.createElement('select');
+        lsel.id = `livello-${i}`;
+        lsel.dataset.slot = String(i);
+        lsel.className = 'livello-select';
+        const lopt0 = document.createElement('option');
+        lopt0.value = ''; lopt0.textContent = '— seleziona livello —';
+        lsel.appendChild(lopt0);
+        for (const lv of livelli){
+          const o = document.createElement('option');
+          o.value = lv; o.textContent = lv;
+          if (langSlots[i].livello === lv) o.selected = true;
+          lsel.appendChild(o);
+        }
+        lf.appendChild(ll);
+        lf.appendChild(lsel);
+        lingueSlotEl.appendChild(lf);
+      } else {
+        langSlots[i].livello = null;
+      }
+    }
+  }
+}
+
+lingueSlotEl.addEventListener('change', (e) => {
+  const t = e.target;
+  const i = parseInt(t.dataset.slot, 10);
+  if (Number.isNaN(i)) return;
+  if (t.classList.contains('lingua-select')){
+    langSlots[i].lang = t.value || null;
+    langSlots[i].livello = null;
+    renderLinguaSlots();
+  } else if (t.classList.contains('livello-select')){
+    langSlots[i].livello = t.value || null;
+  }
+  render();
+});
+
+function resetLangState(){
+  langSlots = [{lang:null, livello:null}, {lang:null, livello:null}, {lang:null, livello:null}];
+}
+
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function render(){
+  const anno = annoSel.value;
+  const indirizzo = indirizzoSel.value;
+
+  if (!anno){
+    resultsEl.innerHTML = '<p class="placeholder">Seleziona anno, indirizzo e lingue qui sopra per visualizzare il tuo calendario settimanale.</p>';
+    statusEl.textContent = '';
+    return;
+  }
+  if (needsIndirizzo(anno) && !indirizzo){
+    resultsEl.innerHTML = '<p class="placeholder">Seleziona anche il tuo indirizzo per continuare.</p>';
+    statusEl.textContent = '';
+    return;
+  }
+  const count = desiredSlotCount();
+  if (count === 0){
+    resultsEl.innerHTML = '<p class="placeholder">Seleziona quante lingue segui per continuare.</p>';
+    statusEl.textContent = '';
+    return;
+  }
+  for (let i = 0; i < count; i++){
+    if (!langSlots[i].lang){
+      resultsEl.innerHTML = `<p class="placeholder">Seleziona tutte le ${count} lingue richieste per il tuo profilo.</p>`;
+      statusEl.textContent = '';
+      return;
+    }
+    if (livelliDisponibili(anno, langSlots[i].lang).length > 1 && !langSlots[i].livello){
+      resultsEl.innerHTML = `<p class="placeholder">Seleziona il livello di partenza per ${escapeHtml(langSlots[i].lang)}.</p>`;
+      statusEl.textContent = '';
+      return;
+    }
+  }
+
+  const selectedLangs = langSlots.slice(0, count).map(s => s.lang);
+  const livelloByLang = {};
+  langSlots.slice(0, count).forEach(s => { if (s.lang) livelloByLang[s.lang] = s.livello; });
+
+  const matches = coursesForAnno(anno).filter(c => {
+    const matchIndirizzo = !c.indirizzi || c.indirizzi.includes(indirizzo);
+    let matchLingua;
+    if (c.lingua){
+      matchLingua = selectedLangs.includes(c.lingua) && (!c.livello || c.livello === livelloByLang[c.lingua]);
+    } else {
+      matchLingua = true; // corso non di lingua: dipende solo dall'indirizzo
+    }
+    return matchIndirizzo && matchLingua;
+  });
+
+  matches.sort((a,b) => a.giornoOrd - b.giornoOrd || a.oraSort - b.oraSort);
+
+  statusEl.innerHTML = `Trovate <strong>${matches.length}</strong> lezioni settimanali per il tuo profilo (${selectedLangs.map(escapeHtml).join(', ')}).`;
+
+  const byDay = {};
+  for (const g of GIORNI) byDay[g] = [];
+  for (const c of matches) (byDay[c.giorno] || (byDay[c.giorno] = [])).push(c);
+
+  let html = '<div class="days">';
+  for (const g of GIORNI){
+    const list = byDay[g] || [];
+    html += `<div class="day-col"><h2>${g}${list.length ? ` <span class="count-pill">${list.length}</span>` : ''}</h2>`;
+    if (list.length === 0){
+      html += '<div class="empty-day">Nessuna lezione</div>';
+    } else {
+      for (const c of list){
+        const modClass = c.modalita === 'Online' ? 'online' : 'presenza';
+        html += `<div class="course-card ${modClass}">
+          ${c.lingua && selectedLangs.length > 1 ? `<span class="course-lang-tag">${escapeHtml(c.lingua)}${c.livello ? ' · ' + escapeHtml(c.livello) : ''}</span>` : ''}
+          <h3>${escapeHtml(c.titolo)}</h3>
+          <div class="course-meta-row">
+            <div class="course-meta"><span class="ic">👤</span>${escapeHtml(c.docente || '')}</div>
+            <div class="course-meta"><span class="ic">🕒</span>${escapeHtml(c.orario || '')}</div>
+          </div>
+          <span class="badge ${modClass}">${escapeHtml(c.modalita || '')}</span>
+          ${c.gruppo ? `<div class="course-note"><strong>Gruppo:</strong> ${escapeHtml(c.gruppo)}</div>` : ''}
+          ${c.note ? `<div class="course-note">${escapeHtml(c.note)}</div>` : ''}
+        </div>`;
+      }
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  resultsEl.innerHTML = html;
+}
+
+annoSel.addEventListener('change', () => {
+  const anno = annoSel.value;
+  resetLangState();
+  indirizzoSel.value = '';
+  numLinguaSel.value = '';
+  if (!anno){
+    indirizzoSel.innerHTML = '<option value="">— seleziona prima l\'anno —</option>';
+    indirizzoSel.disabled = true;
+    numLinguaField.style.display = 'none';
+    lingueSlotEl.innerHTML = '';
+  } else if (needsIndirizzo(anno)){
+    populateIndirizzo(anno);
+    numLinguaField.style.display = 'none';
+    lingueSlotEl.innerHTML = '';
+  } else {
+    indirizzoSel.innerHTML = '<option value="">Nessun indirizzo per questo anno (solo lingue)</option>';
+    indirizzoSel.disabled = true;
+    numLinguaField.style.display = '';
+    lingueSlotEl.innerHTML = '';
+  }
+  render();
+});
+
+indirizzoSel.addEventListener('change', () => {
+  resetLangState();
+  renderLinguaSlots();
+  render();
+});
+
+numLinguaSel.addEventListener('change', () => {
+  resetLangState();
+  renderLinguaSlots();
+  render();
+});
+
+async function init(){
+  clearBanner();
+  resultsEl.innerHTML = '<p class="placeholder">Caricamento dati in corso…</p>';
+  await loadData();
+  populateAnni();
+  render();
+}
+
+init();
+</script>
+
+</body>
+</html>
