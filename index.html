@@ -173,18 +173,6 @@
   .print-btn:hover{ background:var(--canvas); color:var(--navy); border-color:var(--navy-2); }
   .print-btn .ic{ font-size:.95rem; }
 
-  @media print{
-    @page{ size: landscape; margin: 10mm; }
-    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
-    body{ background:#fff; }
-    .header-version, #banner-slot, .print-btn, footer .fine-print-extra{ display:none; }
-    .panel{ box-shadow:none; border:1px solid #ccc; }
-    .days{ gap:8px; }
-    .day-col, .course-card{ break-inside:avoid; }
-    .course-card{ box-shadow:none; }
-    .modal-overlay{ display:none !important; }
-  }
-
   .banner{
     display:flex;
     gap:10px;
@@ -513,12 +501,39 @@
   .modal-course-item:first-of-type{ border-top:none; }
   .modal-course-item .mc-title{ font-weight:600; color:var(--ink); }
   .modal-course-item .mc-meta{ color:var(--ink-soft); font-size:.78rem; margin-top:2px; }
+  @media print{
+    @page{ size: portrait; margin: 12mm; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body{ background:#fff; margin:0; }
+    header, footer, .header-version, #banner-slot, .print-btn{ display:none; }
+    main{ max-width:100%; margin:0; padding:0; }
+    .panel{
+      box-shadow:none;
+      border:1px solid #ccc;
+      border-radius:0;
+      margin-bottom:14px;
+      break-inside:avoid;
+    }
+    #results-panel{ break-inside:auto; }
+    .days{
+      display:block;
+    }
+    .day-col{
+      display:block;
+      width:100%;
+      break-inside:avoid;
+      margin-bottom:12px;
+    }
+    .day-col:last-child{ margin-bottom:0; }
+    .course-card{ break-inside:avoid; box-shadow:none; }
+    .modal-overlay{ display:none !important; }
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-version">v1.1</div>
+  <div class="header-version">v1.2</div>
   <div class="header-inner">
     <div class="crest" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="#D2AE64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
