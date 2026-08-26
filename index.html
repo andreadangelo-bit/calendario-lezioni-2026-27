@@ -58,6 +58,7 @@
 
   /* ---------------- Header ---------------- */
   header{
+    position:relative;
     background:linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
     color:#F3F6FA;
     padding:0;
@@ -103,6 +104,16 @@
   }
   @media (max-width:560px){
     .header-logo{ display:none; }
+  }
+  .header-version{
+    position:absolute;
+    top:8px;
+    right:14px;
+    font-size:.66rem;
+    letter-spacing:.03em;
+    color:rgba(243,246,250,0.4);
+    font-family:var(--sans);
+    user-select:none;
   }
 
   main{
@@ -470,6 +481,7 @@
 <body>
 
 <header>
+  <div class="header-version">v1.0</div>
   <div class="header-inner">
     <div class="crest" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="#D2AE64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
