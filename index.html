@@ -147,6 +147,43 @@
     background:var(--line);
     margin-left:6px;
   }
+  .panel-title-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:0 0 16px;
+  }
+  .panel-title-row .panel-title{ flex:1; margin:0; }
+  .print-btn{
+    flex:0 0 auto;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--sans);
+    font-size:.8rem;
+    font-weight:600;
+    color:var(--navy-2);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:6px 12px;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .print-btn:hover{ background:var(--canvas); color:var(--navy); border-color:var(--navy-2); }
+  .print-btn .ic{ font-size:.95rem; }
+
+  @media print{
+    @page{ size: landscape; margin: 10mm; }
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    body{ background:#fff; }
+    .header-version, #banner-slot, .print-btn, footer .fine-print-extra{ display:none; }
+    .panel{ box-shadow:none; border:1px solid #ccc; }
+    .days{ gap:8px; }
+    .day-col, .course-card{ break-inside:avoid; }
+    .course-card{ box-shadow:none; }
+    .modal-overlay{ display:none !important; }
+  }
 
   .banner{
     display:flex;
@@ -481,7 +518,7 @@
 <body>
 
 <header>
-  <div class="header-version">v1.0</div>
+  <div class="header-version">v1.1</div>
   <div class="header-inner">
     <div class="crest" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="#D2AE64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
@@ -535,7 +572,10 @@
   </section>
 
   <section class="panel" id="results-panel">
-    <h2 class="panel-title">Il tuo orario settimanale</h2>
+    <div class="panel-title-row">
+      <h2 class="panel-title">Il tuo orario settimanale</h2>
+      <button type="button" class="print-btn" id="print-btn"><span class="ic">🖨️</span>Stampa</button>
+    </div>
     <div id="results">
       <p class="placeholder">Caricamento dati in corso…</p>
     </div>
@@ -770,7 +810,7 @@ async function loadData(){
     COURSES = parsed;
     clearBanner();
     const now = new Date();
-    freshnessEl.textContent = `Dati aggiornati alle ${now.toLocaleTimeString('it-IT')} del ${now.toLocaleDateString('it-IT')}.`;
+    freshnessEl.textContent = `Dati aggiornati dal foglio online alle ${now.toLocaleTimeString('it-IT')} del ${now.toLocaleDateString('it-IT')}.`;
   } catch (err){
     console.error('Errore nel caricamento dei dati online:', err);
     COURSES = FALLBACK_DATA;
@@ -1086,6 +1126,9 @@ docenteModalOverlay.addEventListener('click', (e) => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && !docenteModalOverlay.hidden) closeDocenteModal();
 });
+
+const printBtn = document.getElementById('print-btn');
+printBtn.addEventListener('click', () => window.print());
 
 annoSel.addEventListener('change', () => {
   const anno = annoSel.value;
