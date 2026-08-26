@@ -770,7 +770,7 @@ async function loadData(){
     COURSES = parsed;
     clearBanner();
     const now = new Date();
-    freshnessEl.textContent = `Dati aggiornati dal foglio online alle ${now.toLocaleTimeString('it-IT')} del ${now.toLocaleDateString('it-IT')}.`;
+    freshnessEl.textContent = `Dati aggiornati alle ${now.toLocaleTimeString('it-IT')} del ${now.toLocaleDateString('it-IT')}.`;
   } catch (err){
     console.error('Errore nel caricamento dei dati online:', err);
     COURSES = FALLBACK_DATA;
