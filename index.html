@@ -15,6 +15,7 @@
     --canvas:#F3F5F8;
     --gold:#9C7A34;
     --gold-soft:#F4EDDC;
+    --link:#1B3A5C;
     --online:#2A7D6E;
     --online-bg:#E7F3F0;
     --presenza:#5B4A94;
@@ -32,6 +33,7 @@
     :root{
       --navy:#0E1E30;
       --navy-2:#16314C;
+      --link:#7EB6E8;
       --ink:#E8ECF1;
       --ink-soft:#A6B0BE;
       --line:#2A3644;
@@ -39,8 +41,11 @@
       --canvas:#0F1620;
       --gold:#D2AE64;
       --gold-soft:#2A2418;
+      --online:#4DBE9C;
       --online-bg:#12291F;
+      --presenza:#B29FE8;
       --presenza-bg:#231E38;
+      --warn:#E3B15C;
       --warn-bg:#2C2210;
       --warn-line:#5A4620;
     }
@@ -134,7 +139,7 @@
     font-family:var(--serif);
     font-size:1.02rem;
     font-weight:600;
-    color:var(--navy);
+    color:var(--ink);
     margin:0 0 16px;
     display:flex;
     align-items:baseline;
@@ -162,7 +167,7 @@
     font-family:var(--sans);
     font-size:.8rem;
     font-weight:600;
-    color:var(--navy-2);
+    color:var(--link);
     background:var(--paper);
     border:1px solid var(--line);
     border-radius:var(--radius-sm);
@@ -170,7 +175,7 @@
     cursor:pointer;
     white-space:nowrap;
   }
-  .print-btn:hover{ background:var(--canvas); color:var(--navy); border-color:var(--navy-2); }
+  .print-btn:hover{ background:var(--canvas); color:var(--gold); border-color:var(--gold); }
   .print-btn .ic{ font-size:.95rem; }
 
   .banner{
@@ -238,7 +243,7 @@
     box-shadow:0 0 0 3px var(--gold-soft);
   }
   select:not(:disabled):hover{
-    border-color:var(--navy-2);
+    border-color:var(--gold);
   }
   .field-hint{
     font-size:.72rem;
@@ -261,7 +266,7 @@
     font-size:.88rem;
     color:var(--ink);
   }
-  #status strong{ color:var(--navy); }
+  #status strong{ color:var(--ink); }
   #freshness{
     font-size:.72rem;
     color:var(--ink-soft);
@@ -279,13 +284,13 @@
 
   .day-col h2{
     font-family:var(--serif);
-    color:var(--navy);
+    color:var(--ink);
     text-align:left;
     font-size:1.0rem;
     font-weight:600;
     margin:0 0 12px;
     padding:0 0 8px;
-    border-bottom:2px solid var(--navy);
+    border-bottom:2px solid var(--ink);
   }
   .day-col h2 .count-pill{
     float:right;
@@ -320,7 +325,7 @@
     font-weight:700;
     text-transform:uppercase;
     letter-spacing:.04em;
-    color:var(--navy-2);
+    color:var(--link);
     background:var(--canvas);
     border:1px solid var(--line);
     padding:1px 7px;
@@ -342,7 +347,7 @@
   }
   .docente-link{
     font: inherit;
-    color:var(--navy-2);
+    color:var(--link);
     background:none;
     border:none;
     padding:0;
@@ -483,7 +488,7 @@
     font-size:.88rem;
     margin:2px 0 18px;
   }
-  .modal-email a{ color:var(--navy-2); }
+  .modal-email a{ color:var(--link); }
   .modal-email .none{ color:var(--ink-soft); font-style:italic; }
   .modal-courses-title{
     font-size:.72rem;
@@ -533,7 +538,7 @@
 <body>
 
 <header>
-  <div class="header-version">v1.2</div>
+  <div class="header-version">v1.3</div>
   <div class="header-inner">
     <div class="crest" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" stroke="#D2AE64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
