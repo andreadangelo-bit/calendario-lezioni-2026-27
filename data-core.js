@@ -210,3 +210,32 @@ async function loadCourseData(timeoutMs){
     return { courses: FALLBACK_DATA, source: 'error', error: err };
   }
 }
+
+/* Converte un testo "Orario" nella sua durata effettiva in ore (numero, es.
+   1.5), usata da riepilogo.html per calcolare le ore di lezione. Regole,
+   dedotte dai formati realmente usati nel foglio:
+   - "09:00–11:00"                              -> una sola fascia: la durata è quella.
+   - "09:00–11:00 (gr.2) / 11:00–13:00 (gr.1)"  -> fasce alternative (gruppi diversi
+     nello stesso corso): uno studente ne segue una sola, e nei dati attuali hanno
+     sempre la stessa durata, quindi si usa la prima fascia come rappresentativa.
+   - "13:00–14:00 e 15:30–18:00"                 -> fasce che si sommano davvero
+     (stesso giorno, stesso corso, entrambe frequentate): durate sommate.
+   - "da confermare" o testo senza orari         -> restituisce null (non calcolabile:
+     va escluso dai totali ore, non trattato come zero).
+   Non modifica né dipende da altri dati: è una funzione pura, riusabile ovunque. */
+function parseOrarioHours(orario){
+  if (!orario) return null;
+  const firstAlternative = orario.split('/')[0];
+  const segments = firstAlternative.split(/\s+e\s+/i);
+  const re = /(\d{1,2}):(\d{2})\s*[–-]\s*(\d{1,2}):(\d{2})/;
+  let totalMinutes = 0, found = false;
+  for (const seg of segments){
+    const m = re.exec(seg);
+    if (!m) continue;
+    found = true;
+    const start = parseInt(m[1], 10) * 60 + parseInt(m[2], 10);
+    const end = parseInt(m[3], 10) * 60 + parseInt(m[4], 10);
+    if (end > start) totalMinutes += (end - start);
+  }
+  return found ? Math.round((totalMinutes / 60) * 100) / 100 : null;
+}

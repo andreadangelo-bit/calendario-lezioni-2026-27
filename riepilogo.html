@@ -196,6 +196,44 @@
   }
   #reload-btn:hover{ background:var(--warn-bg); }
 
+  /* ---------------- Interruttore modalità ---------------- */
+  .mode-tabs{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .mode-tab{
+    flex:1 1 220px;
+    text-align:left;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:12px 16px;
+    cursor:pointer;
+    font-family:var(--sans);
+  }
+  .mode-tab .mt-title{
+    font-weight:700;
+    font-size:.9rem;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .mode-tab .mt-desc{
+    font-size:.76rem;
+    color:var(--ink-soft);
+    margin-top:3px;
+  }
+  .mode-tab.active{
+    border-color:var(--gold);
+    background:var(--gold-soft);
+    box-shadow:0 0 0 1px var(--gold);
+  }
+  .mode-tab.active .mt-title{ color:var(--gold); }
+  .mode-tab:not(.active):hover{ border-color:var(--gold); }
+
+  /* ---------------- Filtri (modalità "sfoglia") ---------------- */
   .filters{
     display:grid;
     grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
@@ -211,26 +249,29 @@
     color:var(--ink-soft);
     margin-bottom:7px;
   }
-  select{
+  select, textarea{
     width:100%;
     padding:10px 12px;
     border-radius:var(--radius-sm);
     border:1px solid var(--line);
-    background:var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%234B5768' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center;
+    background:var(--paper);
     color:var(--ink);
     font-size:.95rem;
     font-family:var(--sans);
-    appearance:none;
-    padding-right:32px;
     transition:border-color .15s ease, box-shadow .15s ease;
   }
-  select:focus{
+  select{
+    background:var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%234B5768' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center;
+    appearance:none;
+    padding-right:32px;
+  }
+  select:focus, textarea:focus{
     outline:none;
     border-color:var(--gold);
     box-shadow:0 0 0 3px var(--gold-soft);
   }
   select:hover{ border-color:var(--gold); }
-  .reset-btn{
+  .reset-btn, .action-btn{
     flex:0 0 auto;
     display:inline-flex;
     align-items:center;
@@ -247,15 +288,73 @@
     white-space:nowrap;
     height:41px;
   }
-  .reset-btn:hover{ background:var(--canvas); color:var(--gold); border-color:var(--gold); }
+  .reset-btn:hover, .action-btn:hover{ background:var(--canvas); color:var(--gold); border-color:var(--gold); }
+  .action-btn.primary{
+    background:var(--navy);
+    color:#fff;
+    border-color:var(--navy);
+  }
+  .action-btn.primary:hover{ background:var(--navy-2); color:#fff; border-color:var(--navy-2); }
 
-  #combo-count{
+  #combo-count, #incolla-combo-count{
     font-size:.86rem;
     color:var(--ink-soft);
     white-space:nowrap;
   }
-  #combo-count strong{ color:var(--ink); }
+  #combo-count strong, #incolla-combo-count strong{ color:var(--ink); }
 
+  /* ---------------- Casella "incolla lista" ---------------- */
+  .paste-textarea{
+    min-height:120px;
+    font-family:ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    font-size:.82rem;
+    resize:vertical;
+    line-height:1.5;
+  }
+  .field-hint{
+    font-size:.72rem;
+    color:var(--ink-soft);
+    margin-top:7px;
+    font-style:italic;
+  }
+  .paste-actions{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-top:12px;
+    flex-wrap:wrap;
+  }
+  .issue-list{
+    list-style:none;
+    margin:10px 0 0;
+    padding:0;
+    max-height:220px;
+    overflow-y:auto;
+    border:1px solid var(--warn-line);
+    border-radius:var(--radius-sm);
+    background:var(--warn-bg);
+  }
+  .issue-list li{
+    padding:7px 12px;
+    font-size:.78rem;
+    color:var(--warn);
+    border-bottom:1px solid var(--warn-line);
+  }
+  .issue-list li:last-child{ border-bottom:none; }
+  .issue-list code{
+    background:rgba(0,0,0,0.06);
+    padding:1px 5px;
+    border-radius:4px;
+    font-size:.76rem;
+  }
+  .paste-summary{
+    margin:12px 0 0;
+    font-size:.86rem;
+    color:var(--ink-soft);
+  }
+  .paste-summary strong{ color:var(--ink); }
+
+  /* ---------------- Tabella combinazioni ---------------- */
   .table-wrap{
     overflow-x:auto;
     border:1px solid var(--line);
@@ -265,7 +364,7 @@
     width:100%;
     border-collapse:collapse;
     font-size:.86rem;
-    min-width:760px;
+    min-width:820px;
   }
   table.combo-table thead th{
     position:sticky;
@@ -293,12 +392,13 @@
   }
   table.combo-table tbody tr:last-child td{ border-bottom:none; }
   table.combo-table tbody tr:hover{ background:var(--canvas); }
-  table.combo-table td.day-col{ text-align:center; color:var(--ink-soft); }
-  table.combo-table td.day-col.has-lesson{ color:var(--ink); font-weight:700; }
+  table.combo-table td.day-col{ text-align:center; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  table.combo-table td.day-col.has-lesson{ color:var(--ink); font-weight:600; }
   table.combo-table td.tot-col{
     text-align:center;
     font-weight:700;
     color:var(--gold);
+    white-space:nowrap;
   }
   .indirizzo-none{ color:var(--ink-soft); font-style:italic; }
   .lang-chip{
@@ -328,12 +428,153 @@
   }
   .open-cal-btn:hover{ background:var(--gold-soft); color:var(--gold); border-color:var(--gold); }
 
+  /* ---------------- Riepilogo aggregato ("intera annata") ---------------- */
+  .agg-summary{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(100px, 1fr));
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .agg-stat{
+    text-align:center;
+    background:var(--canvas);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:12px 8px;
+  }
+  .agg-stat-day{
+    font-size:.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--ink-soft);
+  }
+  .agg-stat-num{
+    font-family:var(--serif);
+    font-size:1.5rem;
+    font-weight:600;
+    color:var(--ink);
+    margin-top:4px;
+  }
+  .agg-stat-hours{
+    font-size:.78rem;
+    color:var(--gold);
+    font-weight:600;
+    margin-top:2px;
+  }
+  .agg-stat-total{
+    background:var(--navy);
+    border-color:var(--navy);
+  }
+  .agg-stat-total .agg-stat-day{ color:#C9D3E0; }
+  .agg-stat-total .agg-stat-num{ color:#fff; }
+  .agg-stat-total .agg-stat-hours{ color:var(--gold); }
+
+  /* ---------------- Elenco lezioni per giorno (dettaglio aggregato) ---------------- */
+  .days{
+    display:grid;
+    grid-template-columns:repeat(5, 1fr);
+    gap:16px;
+  }
+  @media (max-width: 980px){ .days{grid-template-columns:repeat(2, 1fr);} }
+  @media (max-width: 620px){ .days{grid-template-columns:1fr;} }
+
+  .day-col h2{
+    font-family:var(--serif);
+    color:var(--ink);
+    text-align:left;
+    font-size:1.0rem;
+    font-weight:600;
+    margin:0 0 12px;
+    padding:0 0 8px;
+    border-bottom:2px solid var(--ink);
+  }
+  .day-col h2 .count-pill{
+    float:right;
+    background:var(--gold-soft);
+    color:var(--gold);
+    border:1px solid var(--gold);
+  }
+  .count-pill{
+    display:inline-block;
+    font-size:.68rem;
+    font-weight:700;
+    padding:1px 8px;
+    border-radius:999px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+
+  .course-card{
+    position:relative;
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-left:3px solid var(--navy-2);
+    border-radius:var(--radius-sm);
+    padding:12px 14px 13px;
+    margin-bottom:12px;
+    box-shadow:var(--shadow);
+  }
+  .course-card.online{ border-left-color:var(--online); }
+  .course-card.presenza{ border-left-color:var(--presenza); }
+  .course-card h3{
+    margin:0 0 6px;
+    font-size:.88rem;
+    font-weight:700;
+    line-height:1.32;
+    color:var(--ink);
+  }
+  .course-meta-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:4px 14px;
+    margin:4px 0 0;
+  }
+  .course-meta{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .course-meta .ic{ opacity:.75; }
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-size:.68rem;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    padding:3px 9px;
+    border-radius:999px;
+    margin-top:9px;
+  }
+  .badge::before{
+    content:"";
+    width:6px; height:6px;
+    border-radius:50%;
+    background:currentColor;
+  }
+  .badge.online{ color:var(--online); background:var(--online-bg); }
+  .badge.presenza{ color:var(--presenza); background:var(--presenza-bg); }
+  .empty-day{
+    font-size:.8rem;
+    color:var(--ink-soft);
+    text-align:center;
+    padding:22px 6px;
+    border:1px dashed var(--line);
+    border-radius:var(--radius-sm);
+    background:var(--canvas);
+  }
+
   .placeholder{
     text-align:center;
     padding:40px 16px;
     color:var(--ink-soft);
     font-size:.92rem;
   }
+  [hidden]{ display:none !important; }
 
   footer{
     text-align:center;
@@ -370,47 +611,111 @@
 
   <section class="panel">
     <h2 class="panel-title">Cos'è questa pagina</h2>
+    <p style="margin:0 0 10px; font-size:.9rem; color:var(--ink-soft);">
+      Per ogni combinazione di Anno di corso, Indirizzo e Lingue (esattamente come la sceglierebbe uno studente
+      nel calendario) questa pagina mostra quante lezioni cadono in ciascun giorno della settimana e quante ore
+      effettive di lezione rappresentano. Cliccando su "Apri calendario" per una riga si apre, in una nuova
+      scheda, lo stesso calendario che vedrebbe lo studente con quel profilo.
+    </p>
     <p style="margin:0; font-size:.9rem; color:var(--ink-soft);">
-      Per ogni combinazione possibile di Anno di corso, Indirizzo e Lingue (esattamente come la sceglierebbe
-      uno studente nel calendario) questa pagina mostra quante lezioni cadono in ciascun giorno della settimana.
-      Utile per individuare rapidamente giornate molto cariche o vuote. I filtri qui sotto non limitano l'elenco
-      generato (che resta sempre completo): servono solo per trovare più in fretta le righe che interessano.
-      Cliccando su "Apri calendario" per una riga si apre, in una nuova scheda, lo stesso calendario che vedrebbe
-      lo studente con quel profilo.
+      Puoi <strong>sfogliare tutte le combinazioni possibili</strong> (generate automaticamente dai dati) oppure
+      <strong>incollare tu una lista di combinazioni</strong> — ad es. copiata da Excel — per vedere a colpo
+      d'occhio tutte le lezioni e le ore di un'intera annata di studenti, senza doverle cercare una per una.
+      Scegli qui sotto quale modalità usare.
     </p>
   </section>
 
   <section class="panel">
-    <h2 class="panel-title">Filtra la tabella</h2>
-    <div id="banner-slot"></div>
-    <div class="filters">
-      <div class="field">
-        <label for="f-anno">Anno di corso</label>
-        <select id="f-anno"><option value="">Tutti</option></select>
-      </div>
-      <div class="field">
-        <label for="f-indirizzo">Indirizzo</label>
-        <select id="f-indirizzo"><option value="">Tutti</option></select>
-      </div>
-      <div class="field">
-        <label for="f-lingua">Lingua</label>
-        <select id="f-lingua"><option value="">Tutte</option></select>
-      </div>
-      <div class="field">
-        <button type="button" class="reset-btn" id="reset-filters">Reimposta filtri</button>
-      </div>
+    <div class="mode-tabs">
+      <button type="button" class="mode-tab active" id="tab-sfoglia" data-mode="sfoglia">
+        <div class="mt-title">📋 Sfoglia tutte le combinazioni</div>
+        <div class="mt-desc">L'elenco completo, generato automaticamente, con filtri per cercare più in fretta.</div>
+      </button>
+      <button type="button" class="mode-tab" id="tab-incolla" data-mode="incolla">
+        <div class="mt-title">📥 Incolla una lista</div>
+        <div class="mt-desc">Incolla da Excel le combinazioni di un'intera annata e ottieni il totale lezioni/ore in un colpo solo.</div>
+      </button>
     </div>
   </section>
 
-  <section class="panel">
-    <div class="panel-title-row">
-      <h2 class="panel-title">Combinazioni e lezioni per giorno</h2>
-      <div id="combo-count"></div>
-    </div>
-    <div id="table-slot">
-      <p class="placeholder">Caricamento dati in corso…</p>
-    </div>
-  </section>
+  <div id="banner-slot"></div>
+
+  <!-- ==================== MODALITÀ: SFOGLIA TUTTE ==================== -->
+  <div id="panel-sfoglia">
+    <section class="panel">
+      <h2 class="panel-title">Filtra la tabella</h2>
+      <div class="filters">
+        <div class="field">
+          <label for="f-anno">Anno di corso</label>
+          <select id="f-anno"><option value="">Tutti</option></select>
+        </div>
+        <div class="field">
+          <label for="f-indirizzo">Indirizzo</label>
+          <select id="f-indirizzo"><option value="">Tutti</option></select>
+        </div>
+        <div class="field">
+          <label for="f-lingua">Lingua</label>
+          <select id="f-lingua"><option value="">Tutte</option></select>
+        </div>
+        <div class="field">
+          <button type="button" class="reset-btn" id="reset-filters">Reimposta filtri</button>
+        </div>
+      </div>
+      <p class="field-hint">I filtri servono solo a cercare più in fretta: l'elenco generato resta sempre completo.</p>
+    </section>
+
+    <section class="panel">
+      <div class="panel-title-row">
+        <h2 class="panel-title">Combinazioni e lezioni per giorno</h2>
+        <div id="combo-count"></div>
+      </div>
+      <div id="table-slot"><p class="placeholder">Caricamento dati in corso…</p></div>
+    </section>
+  </div>
+
+  <!-- ==================== MODALITÀ: INCOLLA LISTA ==================== -->
+  <div id="panel-incolla" hidden>
+    <section class="panel">
+      <h2 class="panel-title">Incolla le combinazioni</h2>
+      <div class="field">
+        <label for="paste-input">Incolla da Excel: una riga per combinazione, colonne <strong>Anno di Corso, Indirizzo, Lingua 1, Lingua 2, Lingua 3</strong></label>
+        <textarea id="paste-input" class="paste-textarea" placeholder="Primo Anno&#9;Marketing e comunicazione&#9;Inglese&#9;Francese&#10;Primo Anno&#9;Fashion &amp; Luxury Management&#9;Inglese&#9;Spagnolo&#10;Primo Anno&#9;Mediazione linguistica in tre lingue&#9;Inglese&#9;Francese&#9;Cinese&#10;Terzo Anno&#9;&#9;Inglese&#9;Tedesco"></textarea>
+        <p class="field-hint">
+          La Lingua 3 va lasciata vuota per chi ne segue solo 2; per il Terzo Anno (senza indirizzo) lascia vuota
+          la colonna Indirizzo. Puoi incollare anche con la riga di intestazione: viene riconosciuta e ignorata
+          automaticamente. Nota: questo formato non include il livello di partenza (es. Cinese "da A0" / "da
+          B1") — se una lingua ha più livelli in quell'anno, vengono incluse tutte le relative lezioni.
+        </p>
+      </div>
+      <div class="paste-actions">
+        <button type="button" class="action-btn primary" id="parse-btn">Genera panoramica →</button>
+        <button type="button" class="action-btn" id="clear-paste-btn">Svuota</button>
+      </div>
+      <div id="paste-feedback"></div>
+    </section>
+
+    <section class="panel" id="incolla-rows-panel" hidden>
+      <div class="panel-title-row">
+        <h2 class="panel-title">Le combinazioni incollate</h2>
+        <div id="incolla-combo-count"></div>
+      </div>
+      <div id="incolla-table-slot"></div>
+    </section>
+
+    <section class="panel" id="incolla-agg-panel" hidden>
+      <h2 class="panel-title">Totale per l'intera annata (lezioni distinte)</h2>
+      <p style="margin:0 0 16px; font-size:.86rem; color:var(--ink-soft);">
+        Ogni lezione viene contata <strong>una sola volta</strong>, anche se condivisa da più combinazioni
+        incollate (es. una lezione di lingua aperta a più indirizzi): rappresenta il carico reale di
+        aule/docenti/ore da coprire in quella settimana per servire tutto il gruppo incollato.
+      </p>
+      <div id="incolla-agg-slot"></div>
+    </section>
+
+    <section class="panel" id="incolla-empty-panel">
+      <p class="placeholder">Incolla una lista di combinazioni qui sopra e premi "Genera panoramica" per vedere i risultati.</p>
+    </section>
+  </div>
 </main>
 
 <footer>
@@ -426,16 +731,9 @@
    ========================================================================= */
 
 let COURSES = [];
-let ALL_COMBOS = [];   // combinazioni generate + conteggi già calcolati
-let sortState = { key: 'anno', dir: 1 };
+let ALL_COMBOS = [];
 
 const bannerSlot = document.getElementById('banner-slot');
-const tableSlot = document.getElementById('table-slot');
-const comboCountEl = document.getElementById('combo-count');
-const fAnno = document.getElementById('f-anno');
-const fIndirizzo = document.getElementById('f-indirizzo');
-const fLingua = document.getElementById('f-lingua');
-
 function showBanner(html){ bannerSlot.innerHTML = `<div class="banner">${html}</div>`; }
 function clearBanner(){ bannerSlot.innerHTML = ''; }
 
@@ -446,9 +744,7 @@ function livelliDisponibili(anno, lingua){
   return uniqueSorted(coursesForAnno(anno).filter(c => c.lingua === lingua && c.livello).map(c => c.livello));
 }
 
-/* ---------- generazione combinazioni: stessa identica logica di filtraggio
-   usata da index.html (vedi render() lì), applicata a TUTTE le combinazioni
-   Anno × Indirizzo × Lingue realmente selezionabili nel calendario ---------- */
+/* ---------- generazione di TUTTE le combinazioni (modalità "sfoglia") ---------- */
 function combinationsIndices(n, k){
   const result = [];
   const combo = [];
@@ -484,10 +780,6 @@ function buildCombos(){
     });
 
     for (const indirizzo of indirizzoOptions){
-      // Quante lingue segue lo studente per questa combinazione: identico a
-      // desiredSlotCount() in index.html. Per gli anni senza indirizzo (oggi
-      // solo il Terzo Anno) non c'è modo di saperlo a priori, quindi vengono
-      // generate sia le combinazioni da 2 che quelle da 3 lingue.
       const counts = hasInd ? [indirizzo === INDIRIZZO_TRE_LINGUE ? 3 : 2] : [2, 3];
       for (const count of counts){
         if (availableLangs.length < count) continue;
@@ -503,6 +795,7 @@ function buildCombos(){
   return combos;
 }
 
+/* ---------- corsi corrispondenti a una combinazione (stessa logica di render() in index.html) ---------- */
 function matchesForCombo(combo){
   const selectedLangs = combo.langs.map(v => v.lang);
   const livelloByLang = {};
@@ -511,7 +804,9 @@ function matchesForCombo(combo){
     const matchIndirizzo = !c.indirizzi || (combo.indirizzo && c.indirizzi.includes(combo.indirizzo));
     let matchLingua;
     if (c.lingua){
-      matchLingua = selectedLangs.includes(c.lingua) && (!c.livello || c.livello === livelloByLang[c.lingua]);
+      if (!selectedLangs.includes(c.lingua)) matchLingua = false;
+      else if (combo.ignoreLivello) matchLingua = true; // combinazioni incollate: livello sconosciuto, si includono tutti
+      else matchLingua = (!c.livello || c.livello === livelloByLang[c.lingua]);
     } else {
       matchLingua = true;
     }
@@ -535,13 +830,24 @@ function buildCalendarUrl(combo){
   return 'index.html?' + params.toString();
 }
 
-/* ---------- calcolo righe (combinazione + conteggi per giorno) ---------- */
-function computeRows(){
-  return ALL_COMBOS.map(combo => {
+/* ---------- righe: combinazione + conteggio lezioni/ore per giorno ---------- */
+function computeRows(combos){
+  return combos.map(combo => {
     const matches = matchesForCombo(combo);
     const byDay = {};
-    for (const g of GIORNI) byDay[g] = 0;
-    for (const m of matches) byDay[m.giorno] = (byDay[m.giorno] || 0) + 1;
+    let totOre = 0, totUnknown = false;
+    for (const g of GIORNI){
+      const dayMatches = matches.filter(m => m.giorno === g);
+      let hours = 0, unknown = false;
+      for (const m of dayMatches){
+        const h = parseOrarioHours(m.orario);
+        if (h == null) unknown = true; else hours += h;
+      }
+      hours = Math.round(hours * 100) / 100;
+      byDay[g] = { count: dayMatches.length, hours, unknown };
+      totOre += hours;
+      if (unknown) totUnknown = true;
+    }
     return {
       combo,
       anno: combo.anno,
@@ -549,126 +855,320 @@ function computeRows(){
       langsLabel: langsLabel(combo),
       byDay,
       totale: matches.length,
+      totOre: Math.round(totOre * 100) / 100,
+      totUnknown,
       url: buildCalendarUrl(combo),
     };
   });
 }
 
-let ROWS = [];
+/* ---------- controller di tabella riusabile (usato sia da "sfoglia" sia da "incolla") ---------- */
+function createComboTable(containerEl, countEl){
+  let rows = [];
+  let sortState = { key: 'anno', dir: 1 };
 
-/* ---------- filtri ---------- */
-function populateFilters(){
-  const anni = uniqueSorted(ALL_COMBOS.map(c => c.anno)).sort((a,b)=>ANNO_ORDER.indexOf(a)-ANNO_ORDER.indexOf(b));
-  fAnno.innerHTML = '<option value="">Tutti</option>' + anni.map(a=>`<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
+  function sortedRows(){
+    const { key, dir } = sortState;
+    const sorted = rows.slice();
+    sorted.sort((a, b) => {
+      if (key === 'anno'){
+        const av = ANNO_ORDER.indexOf(a.anno), bv = ANNO_ORDER.indexOf(b.anno);
+        if (av !== bv) return (av - bv) * dir;
+        if (a.indirizzo !== b.indirizzo) return a.indirizzo.localeCompare(b.indirizzo, 'it') * dir;
+        return a.langsLabel.localeCompare(b.langsLabel, 'it') * dir;
+      }
+      if (key === 'indirizzo'){
+        return (a.indirizzo.localeCompare(b.indirizzo, 'it') || a.langsLabel.localeCompare(b.langsLabel, 'it')) * dir;
+      }
+      if (key === 'lingue') return a.langsLabel.localeCompare(b.langsLabel, 'it') * dir;
+      if (key === 'tot') return (a.totale - b.totale) * dir;
+      if (key === 'totore') return (a.totOre - b.totOre) * dir;
+      if (GIORNI.includes(key)) return (a.byDay[key].count - b.byDay[key].count) * dir;
+      return 0;
+    });
+    return sorted;
+  }
 
-  const indirizzi = uniqueSorted(ALL_COMBOS.map(c => c.indirizzo).filter(Boolean));
-  fIndirizzo.innerHTML = '<option value="">Tutti</option>' + indirizzi.map(i=>`<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
+  function setSort(key){
+    if (sortState.key === key) sortState.dir *= -1; else sortState = { key, dir: 1 };
+    render();
+  }
 
-  const lingue = uniqueSorted(ALL_COMBOS.flatMap(c => c.langs.map(v=>v.lang)));
-  fLingua.innerHTML = '<option value="">Tutte</option>' + lingue.map(l=>`<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
+  function render(){
+    const rs = sortedRows();
+    if (countEl) countEl.innerHTML = `<strong>${rs.length}</strong> combinazion${rs.length === 1 ? 'e' : 'i'}`;
+
+    if (rs.length === 0){
+      containerEl.innerHTML = '<p class="placeholder">Nessuna combinazione da mostrare.</p>';
+      return;
+    }
+
+    const sortIc = (key) => sortState.key === key ? (sortState.dir === 1 ? '▲' : '▼') : '';
+    let html = '<div class="table-wrap"><table class="combo-table"><thead><tr>';
+    html += `<th data-sort="anno">Anno <span class="sort-ic">${sortIc('anno')}</span></th>`;
+    html += `<th data-sort="indirizzo">Indirizzo <span class="sort-ic">${sortIc('indirizzo')}</span></th>`;
+    html += `<th data-sort="lingue">Lingue <span class="sort-ic">${sortIc('lingue')}</span></th>`;
+    for (const g of GIORNI){
+      html += `<th class="day-col" data-sort="${g}" title="Numero lezioni · ore effettive">${g.slice(0, 3)} <span class="sort-ic">${sortIc(g)}</span></th>`;
+    }
+    html += `<th class="tot-col" data-sort="tot">Lez. tot. <span class="sort-ic">${sortIc('tot')}</span></th>`;
+    html += `<th class="tot-col" data-sort="totore">Ore tot. <span class="sort-ic">${sortIc('totore')}</span></th>`;
+    html += '<th></th></tr></thead><tbody>';
+
+    for (const r of rs){
+      html += '<tr>';
+      html += `<td>${escapeHtml(r.anno)}</td>`;
+      html += `<td>${r.indirizzo ? escapeHtml(r.indirizzo) : '<span class="indirizzo-none">— nessuno —</span>'}</td>`;
+      html += `<td>${r.combo.langs.map(v => `<span class="lang-chip">${escapeHtml(v.lang)}${v.livello ? ' · ' + escapeHtml(v.livello) : ''}</span>`).join('')}</td>`;
+      for (const g of GIORNI){
+        const d = r.byDay[g];
+        html += `<td class="day-col${d.count > 0 ? ' has-lesson' : ''}">${d.count > 0 ? `${d.count} · ${d.hours}h${d.unknown ? '*' : ''}` : '–'}</td>`;
+      }
+      html += `<td class="tot-col">${r.totale}</td>`;
+      html += `<td class="tot-col">${r.totOre}h${r.totUnknown ? '*' : ''}</td>`;
+      html += `<td><a class="open-cal-btn" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Apri calendario →</a></td>`;
+      html += '</tr>';
+    }
+    html += '</tbody></table></div>';
+    if (rows.some(r => r.totUnknown)){
+      html += '<p class="field-hint">* alcune lezioni hanno orario "da confermare": non sono incluse nel conteggio delle ore.</p>';
+    }
+    containerEl.innerHTML = html;
+    containerEl.querySelectorAll('th[data-sort]').forEach(th => {
+      th.addEventListener('click', () => setSort(th.dataset.sort));
+    });
+  }
+
+  return {
+    setRows(newRows){ rows = newRows; render(); },
+  };
 }
 
-function filteredRows(){
+/* ==================== MODALITÀ: SFOGLIA TUTTE ==================== */
+const fAnno = document.getElementById('f-anno');
+const fIndirizzo = document.getElementById('f-indirizzo');
+const fLingua = document.getElementById('f-lingua');
+const sfogliaTable = createComboTable(document.getElementById('table-slot'), document.getElementById('combo-count'));
+let SFOGLIA_ROWS = [];
+
+function populateFilters(){
+  const anni = uniqueSorted(ALL_COMBOS.map(c => c.anno)).sort((a, b) => ANNO_ORDER.indexOf(a) - ANNO_ORDER.indexOf(b));
+  fAnno.innerHTML = '<option value="">Tutti</option>' + anni.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
+  const indirizzi = uniqueSorted(ALL_COMBOS.map(c => c.indirizzo).filter(Boolean));
+  fIndirizzo.innerHTML = '<option value="">Tutti</option>' + indirizzi.map(i => `<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
+  const lingue = uniqueSorted(ALL_COMBOS.flatMap(c => c.langs.map(v => v.lang)));
+  fLingua.innerHTML = '<option value="">Tutte</option>' + lingue.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
+}
+
+function renderSfoglia(){
   const anno = fAnno.value, indirizzo = fIndirizzo.value, lingua = fLingua.value;
-  return ROWS.filter(r =>
+  const filtered = SFOGLIA_ROWS.filter(r =>
     (!anno || r.anno === anno) &&
     (!indirizzo || r.indirizzo === indirizzo) &&
     (!lingua || r.combo.langs.some(v => v.lang === lingua))
   );
+  sfogliaTable.setRows(filtered);
 }
+fAnno.addEventListener('change', renderSfoglia);
+fIndirizzo.addEventListener('change', renderSfoglia);
+fLingua.addEventListener('change', renderSfoglia);
+document.getElementById('reset-filters').addEventListener('click', () => {
+  fAnno.value = ''; fIndirizzo.value = ''; fLingua.value = '';
+  renderSfoglia();
+});
 
-/* ---------- ordinamento ---------- */
-const SORT_LABELS = { anno:'Anno', indirizzo:'Indirizzo', lingue:'Lingue', tot:'Totale' };
-function sortRows(rows){
-  const { key, dir } = sortState;
-  const sorted = rows.slice();
-  sorted.sort((a,b) => {
-    let av, bv;
-    if (key === 'anno'){
-      av = ANNO_ORDER.indexOf(a.anno); bv = ANNO_ORDER.indexOf(b.anno);
-      if (av !== bv) return (av - bv) * dir;
-      av = a.indirizzo; bv = b.indirizzo;
-      if (av !== bv) return av.localeCompare(bv, 'it') * dir;
-      return a.langsLabel.localeCompare(b.langsLabel, 'it') * dir;
+/* ==================== MODALITÀ: INCOLLA LISTA ==================== */
+const pasteInput = document.getElementById('paste-input');
+const pasteFeedback = document.getElementById('paste-feedback');
+const incollaRowsPanel = document.getElementById('incolla-rows-panel');
+const incollaAggPanel = document.getElementById('incolla-agg-panel');
+const incollaEmptyPanel = document.getElementById('incolla-empty-panel');
+const incollaTable = createComboTable(document.getElementById('incolla-table-slot'), document.getElementById('incolla-combo-count'));
+const incollaAggSlot = document.getElementById('incolla-agg-slot');
+
+function parsePastedText(text){
+  const lines = text.split(/\r\n|\r|\n/).map(l => l.trim()).filter(l => l.length > 0);
+  const combos = [];
+  const issues = [];
+
+  lines.forEach((line, idx) => {
+    const rowNum = idx + 1;
+    const cells = (line.includes('\t') ? line.split('\t') : line.split(',')).map(c => c.trim());
+    const [annoRaw, indirizzoRaw, l1, l2, l3] = cells;
+
+    if (!annoRaw){
+      issues.push({ line: rowNum, raw: line, reason: 'riga senza Anno di Corso, ignorata' });
+      return;
     }
-    if (key === 'indirizzo'){ av = a.indirizzo; bv = b.indirizzo; return (av.localeCompare(bv, 'it') || a.langsLabel.localeCompare(b.langsLabel,'it')) * dir; }
-    if (key === 'lingue'){ return a.langsLabel.localeCompare(b.langsLabel, 'it') * dir; }
-    if (key === 'tot'){ return (a.totale - b.totale) * dir; }
-    if (GIORNI.includes(key)){ return (a.byDay[key] - b.byDay[key]) * dir; }
-    return 0;
+    const anno = ANNO_ORDER.find(a => a.toLowerCase() === annoRaw.toLowerCase());
+    if (!anno){
+      const headerHint = rowNum === 1 ? ' (probabilmente la riga di intestazione delle colonne, va bene, viene ignorata)' : '';
+      issues.push({ line: rowNum, raw: line, reason: `"${annoRaw}" non è un Anno di Corso valido (Primo Anno / Secondo Anno / Terzo Anno)${headerHint}` });
+      return;
+    }
+
+    const hasInd = needsIndirizzo(anno);
+    let indirizzo = null;
+    if (hasInd){
+      const validIndirizzi = uniqueSorted(coursesForAnno(anno).flatMap(c => c.indirizzi || []));
+      indirizzo = validIndirizzi.find(i => i.toLowerCase() === (indirizzoRaw || '').toLowerCase());
+      if (!indirizzo){
+        issues.push({ line: rowNum, raw: line, reason: `Indirizzo "${indirizzoRaw || ''}" non riconosciuto per ${anno} — riga ignorata` });
+        return;
+      }
+    }
+
+    const availableLangs = uniqueSorted(coursesForAnno(anno).map(c => c.lingua).filter(Boolean));
+    const requestedLangsRaw = [l1, l2, l3].filter(x => x && x.trim());
+    if (requestedLangsRaw.length === 0){
+      issues.push({ line: rowNum, raw: line, reason: `nessuna lingua indicata per ${anno} — riga ignorata` });
+      return;
+    }
+    const langs = [];
+    let langError = null;
+    for (const raw of requestedLangsRaw){
+      const found = availableLangs.find(l => l.toLowerCase() === raw.toLowerCase());
+      if (!found){ langError = raw; break; }
+      langs.push({ lang: found, livello: null });
+    }
+    if (langError){
+      issues.push({ line: rowNum, raw: line, reason: `Lingua "${langError}" non riconosciuta per ${anno} — riga ignorata` });
+      return;
+    }
+
+    combos.push({ anno, indirizzo, langs, ignoreLivello: true });
   });
-  return sorted;
+
+  return { combos, issues, totalLines: lines.length };
 }
 
-function setSort(key){
-  if (sortState.key === key){ sortState.dir *= -1; }
-  else { sortState = { key, dir: 1 }; }
-  renderTable();
+function renderPasteFeedback(issues, comboCount, totalLines){
+  if (totalLines === 0){ pasteFeedback.innerHTML = ''; return; }
+  let html = `<p class="paste-summary"><strong>${comboCount}</strong> combinazion${comboCount === 1 ? 'e riconosciuta' : 'i riconosciute'} su ${totalLines} righe incollate.</p>`;
+  if (issues.length){
+    html += '<ul class="issue-list">' + issues.map(i =>
+      `<li><strong>Riga ${i.line}:</strong> ${escapeHtml(i.reason)} — <code>${escapeHtml(i.raw)}</code></li>`
+    ).join('') + '</ul>';
+  }
+  pasteFeedback.innerHTML = html;
 }
 
-/* ---------- rendering tabella ---------- */
-function renderTable(){
-  const rows = sortRows(filteredRows());
-  comboCountEl.innerHTML = `<strong>${rows.length}</strong> combinazion${rows.length === 1 ? 'e' : 'i'} su ${ROWS.length} totali`;
+function computeAggregate(combos){
+  const byDayCourses = {};
+  for (const g of GIORNI) byDayCourses[g] = new Map();
+  for (const combo of combos){
+    for (const m of matchesForCombo(combo)){
+      const key = m.anno + '|' + m.titolo + '|' + m.giorno + '|' + m.orario;
+      byDayCourses[m.giorno].set(key, m);
+    }
+  }
+  const perDay = {};
+  let totCount = 0, totHours = 0, totUnknown = false;
+  for (const g of GIORNI){
+    const list = [...byDayCourses[g].values()].sort((a, b) => sortKeyTime(a.orario) - sortKeyTime(b.orario));
+    let hours = 0, unknown = false;
+    for (const c of list){
+      const h = parseOrarioHours(c.orario);
+      if (h == null) unknown = true; else hours += h;
+    }
+    hours = Math.round(hours * 100) / 100;
+    perDay[g] = { list, count: list.length, hours, unknown };
+    totCount += list.length; totHours += hours; if (unknown) totUnknown = true;
+  }
+  return { perDay, totCount, totHours: Math.round(totHours * 100) / 100, totUnknown };
+}
 
-  if (rows.length === 0){
-    tableSlot.innerHTML = '<p class="placeholder">Nessuna combinazione corrisponde ai filtri selezionati.</p>';
+function renderAggregate(agg){
+  let html = '<div class="agg-summary">';
+  for (const g of GIORNI){
+    const d = agg.perDay[g];
+    html += `<div class="agg-stat"><div class="agg-stat-day">${g.slice(0, 3)}</div><div class="agg-stat-num">${d.count}</div><div class="agg-stat-hours">${d.hours}h${d.unknown ? '*' : ''}</div></div>`;
+  }
+  html += `<div class="agg-stat agg-stat-total"><div class="agg-stat-day">Totale</div><div class="agg-stat-num">${agg.totCount}</div><div class="agg-stat-hours">${agg.totHours}h${agg.totUnknown ? '*' : ''}</div></div>`;
+  html += '</div>';
+
+  html += '<div class="days">';
+  for (const g of GIORNI){
+    const d = agg.perDay[g];
+    html += `<div class="day-col"><h2>${g}${d.count ? ` <span class="count-pill">${d.count}</span>` : ''}</h2>`;
+    if (d.count === 0){
+      html += '<div class="empty-day">Nessuna lezione</div>';
+    } else {
+      for (const c of d.list){
+        const modClass = c.modalita === 'Online' ? 'online' : 'presenza';
+        const h = parseOrarioHours(c.orario);
+        html += `<div class="course-card ${modClass}">
+          <h3>${escapeHtml(c.titolo)}</h3>
+          <div class="course-meta-row">
+            <div class="course-meta"><span class="ic">👤</span>${escapeHtml(c.docente || '')}</div>
+            <div class="course-meta"><span class="ic">🕒</span>${escapeHtml(c.orario || '')}${h != null ? ` (${h}h)` : ''}</div>
+          </div>
+          <span class="badge ${modClass}">${escapeHtml(c.modalita || '')}</span>
+        </div>`;
+      }
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  if (agg.totUnknown){
+    html += '<p class="field-hint">* alcune lezioni hanno orario "da confermare": non sono incluse nel conteggio delle ore.</p>';
+  }
+  incollaAggSlot.innerHTML = html;
+}
+
+function runPaste(){
+  const { combos, issues, totalLines } = parsePastedText(pasteInput.value);
+  renderPasteFeedback(issues, combos.length, totalLines);
+
+  if (combos.length === 0){
+    incollaRowsPanel.hidden = true;
+    incollaAggPanel.hidden = true;
+    incollaEmptyPanel.hidden = totalLines > 0; // se ci sono righe ma nessuna riconosciuta, i problemi sono già mostrati sopra
     return;
   }
 
-  const sortIc = (key) => sortState.key === key ? (sortState.dir === 1 ? '▲' : '▼') : '';
-
-  let html = '<div class="table-wrap"><table class="combo-table"><thead><tr>';
-  html += `<th data-sort="anno">Anno <span class="sort-ic">${sortIc('anno')}</span></th>`;
-  html += `<th data-sort="indirizzo">Indirizzo <span class="sort-ic">${sortIc('indirizzo')}</span></th>`;
-  html += `<th data-sort="lingue">Lingue <span class="sort-ic">${sortIc('lingue')}</span></th>`;
-  for (const g of GIORNI){
-    html += `<th class="day-col" data-sort="${g}">${g.slice(0,3)} <span class="sort-ic">${sortIc(g)}</span></th>`;
-  }
-  html += `<th class="tot-col" data-sort="tot">Tot. <span class="sort-ic">${sortIc('tot')}</span></th>`;
-  html += `<th></th>`;
-  html += '</tr></thead><tbody>';
-
-  for (const r of rows){
-    html += '<tr>';
-    html += `<td>${escapeHtml(r.anno)}</td>`;
-    html += `<td>${r.indirizzo ? escapeHtml(r.indirizzo) : '<span class="indirizzo-none">— nessuno —</span>'}</td>`;
-    html += `<td>${r.combo.langs.map(v => `<span class="lang-chip">${escapeHtml(v.lang)}${v.livello ? ' · ' + escapeHtml(v.livello) : ''}</span>`).join('')}</td>`;
-    for (const g of GIORNI){
-      const n = r.byDay[g];
-      html += `<td class="day-col${n > 0 ? ' has-lesson' : ''}">${n || '–'}</td>`;
-    }
-    html += `<td class="tot-col">${r.totale}</td>`;
-    html += `<td><a class="open-cal-btn" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Apri calendario →</a></td>`;
-    html += '</tr>';
-  }
-  html += '</tbody></table></div>';
-  tableSlot.innerHTML = html;
-
-  tableSlot.querySelectorAll('th[data-sort]').forEach(th => {
-    th.addEventListener('click', () => setSort(th.dataset.sort));
-  });
+  incollaEmptyPanel.hidden = true;
+  incollaRowsPanel.hidden = false;
+  incollaAggPanel.hidden = false;
+  incollaTable.setRows(computeRows(combos));
+  renderAggregate(computeAggregate(combos));
 }
 
-fAnno.addEventListener('change', renderTable);
-fIndirizzo.addEventListener('change', renderTable);
-fLingua.addEventListener('change', renderTable);
-document.getElementById('reset-filters').addEventListener('click', () => {
-  fAnno.value = ''; fIndirizzo.value = ''; fLingua.value = '';
-  renderTable();
+document.getElementById('parse-btn').addEventListener('click', runPaste);
+document.getElementById('clear-paste-btn').addEventListener('click', () => {
+  pasteInput.value = '';
+  pasteFeedback.innerHTML = '';
+  incollaRowsPanel.hidden = true;
+  incollaAggPanel.hidden = true;
+  incollaEmptyPanel.hidden = false;
 });
+
+/* ---------------- Interruttore modalità ---------------- */
+const tabSfoglia = document.getElementById('tab-sfoglia');
+const tabIncolla = document.getElementById('tab-incolla');
+const panelSfoglia = document.getElementById('panel-sfoglia');
+const panelIncolla = document.getElementById('panel-incolla');
+function setMode(mode){
+  const isSfoglia = mode === 'sfoglia';
+  tabSfoglia.classList.toggle('active', isSfoglia);
+  tabIncolla.classList.toggle('active', !isSfoglia);
+  panelSfoglia.hidden = !isSfoglia;
+  panelIncolla.hidden = isSfoglia;
+}
+tabSfoglia.addEventListener('click', () => setMode('sfoglia'));
+tabIncolla.addEventListener('click', () => setMode('incolla'));
 
 /* ---------------- Caricamento dati (stessa fonte del calendario studenti) ---------------- */
 async function init(){
   clearBanner();
-  tableSlot.innerHTML = '<p class="placeholder">Caricamento dati in corso…</p>';
+  document.getElementById('table-slot').innerHTML = '<p class="placeholder">Caricamento dati in corso…</p>';
   const result = await loadCourseData(12000);
   COURSES = result.courses;
 
   if (result.source === 'no-config'){
     showBanner(`<div>⚠️ <strong>Nessuna sorgente dati online configurata.</strong> Vengono mostrati i dati salvati nel codice (aggiornati al ${FALLBACK_TIMESTAMP}).</div>`);
   } else if (result.source === 'error'){
-    const errText = (result.error && result.error.message) ? String(result.error.message).replace(/</g,'&lt;') : 'Errore sconosciuto';
+    const errText = (result.error && result.error.message) ? String(result.error.message).replace(/</g, '&lt;') : 'Errore sconosciuto';
     showBanner(`<div>⚠️ <strong>Impossibile aggiornare i dati dal foglio online in questo momento.</strong>
       Vengono mostrati i dati salvati nella pagina (aggiornati al ${FALLBACK_TIMESTAMP}).
       <button id="reload-btn">Riprova ora</button>
@@ -680,9 +1180,9 @@ async function init(){
   }
 
   ALL_COMBOS = buildCombos();
-  ROWS = computeRows();
+  SFOGLIA_ROWS = computeRows(ALL_COMBOS);
   populateFilters();
-  renderTable();
+  renderSfoglia();
 }
 
 init();
