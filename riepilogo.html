@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panoramica Lezioni per Giorno — A.A. 2026/2027</title>
+<style>
+  :root{
+    --navy:#122A43;
+    --navy-2:#1B3A5C;
+    --ink:#1B2430;
+    --ink-soft:#4B5768;
+    --line:#DDE3EA;
+    --paper:#FFFFFF;
+    --canvas:#F3F5F8;
+    --gold:#9C7A34;
+    --gold-soft:#F4EDDC;
+    --link:#1B3A5C;
+    --online:#2A7D6E;
+    --online-bg:#E7F3F0;
+    --presenza:#5B4A94;
+    --presenza-bg:#EDEAF7;
+    --warn:#8A5A12;
+    --warn-bg:#FBF0DF;
+    --warn-line:#E4C48A;
+    --radius-sm:6px;
+    --radius:9px;
+    --shadow:0 1px 2px rgba(18,42,67,0.06), 0 4px 14px rgba(18,42,67,0.05);
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --navy:#0E1E30;
+      --navy-2:#16314C;
+      --link:#7EB6E8;
+      --ink:#E8ECF1;
+      --ink-soft:#A6B0BE;
+      --line:#2A3644;
+      --paper:#161F2B;
+      --canvas:#0F1620;
+      --gold:#D2AE64;
+      --gold-soft:#2A2418;
+      --online:#4DBE9C;
+      --online-bg:#12291F;
+      --presenza:#B29FE8;
+      --presenza-bg:#231E38;
+      --warn:#E3B15C;
+      --warn-bg:#2C2210;
+      --warn-line:#5A4620;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    font-family:var(--sans);
+    background:var(--canvas);
+    color:var(--ink);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------------- Header ---------------- */
+  header{
+    position:relative;
+    background:linear-gradient(160deg, var(--navy) 0%, var(--navy-2) 100%);
+    color:#F3F6FA;
+    padding:0;
+    border-bottom:3px solid var(--gold);
+  }
+  .header-inner{
+    max-width:1180px;
+    margin:0 auto;
+    padding:34px 24px 28px;
+    display:flex;
+    align-items:center;
+    gap:18px;
+  }
+  .crest{
+    flex:0 0 auto;
+    width:52px; height:52px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    border:1.5px solid rgba(210,174,100,0.55);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .crest svg{ width:26px; height:26px; }
+  .header-text h1{
+    margin:0 0 3px;
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:1.7rem;
+    letter-spacing:.2px;
+  }
+  .header-text p{
+    margin:0;
+    font-size:.86rem;
+    letter-spacing:.03em;
+    color:#C9D3E0;
+    text-transform:uppercase;
+  }
+  .header-logo{
+    height:30px;
+    width:auto;
+    margin-left:auto;
+    flex:0 0 auto;
+    display:block;
+  }
+  @media (max-width:560px){
+    .header-logo{ display:none; }
+  }
+  .header-version{
+    position:absolute;
+    top:8px;
+    right:14px;
+    font-size:.66rem;
+    letter-spacing:.03em;
+    color:rgba(243,246,250,0.4);
+    font-family:var(--sans);
+    user-select:none;
+  }
+
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding:28px 22px 70px;
+  }
+
+  .back-link{
+    display:inline-block;
+    margin-bottom:16px;
+    font-size:.86rem;
+    color:var(--link);
+    text-decoration:none;
+  }
+  .back-link:hover{ color:var(--gold); }
+
+  .panel{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    padding:24px 26px;
+    margin-bottom:24px;
+  }
+  .panel-title{
+    font-family:var(--serif);
+    font-size:1.02rem;
+    font-weight:600;
+    color:var(--ink);
+    margin:0 0 16px;
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+  }
+  .panel-title::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+    margin-left:6px;
+  }
+  .panel-title-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:0 0 16px;
+    flex-wrap:wrap;
+  }
+  .panel-title-row .panel-title{ flex:1; margin:0; min-width:200px; }
+
+  .banner{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    background:var(--warn-bg);
+    color:var(--warn);
+    border:1px solid var(--warn-line);
+    border-radius:var(--radius-sm);
+    padding:12px 14px;
+    margin-bottom:20px;
+    font-size:.86rem;
+  }
+  .banner strong{display:block; margin-bottom:2px;}
+  #reload-btn{
+    background:var(--paper);
+    border:1px solid var(--warn-line);
+    color:var(--warn);
+    font-size:.74rem;
+    font-weight:600;
+    padding:4px 12px;
+    border-radius:999px;
+    cursor:pointer;
+    margin-left:8px;
+  }
+  #reload-btn:hover{ background:var(--warn-bg); }
+
+  .filters{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(210px, 1fr));
+    gap:16px;
+    align-items:end;
+  }
+  .field label{
+    display:block;
+    font-size:.72rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.07em;
+    color:var(--ink-soft);
+    margin-bottom:7px;
+  }
+  select{
+    width:100%;
+    padding:10px 12px;
+    border-radius:var(--radius-sm);
+    border:1px solid var(--line);
+    background:var(--paper) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' stroke='%234B5768' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") no-repeat right 12px center;
+    color:var(--ink);
+    font-size:.95rem;
+    font-family:var(--sans);
+    appearance:none;
+    padding-right:32px;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  select:focus{
+    outline:none;
+    border-color:var(--gold);
+    box-shadow:0 0 0 3px var(--gold-soft);
+  }
+  select:hover{ border-color:var(--gold); }
+  .reset-btn{
+    flex:0 0 auto;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:var(--sans);
+    font-size:.85rem;
+    font-weight:600;
+    color:var(--link);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:10px 14px;
+    cursor:pointer;
+    white-space:nowrap;
+    height:41px;
+  }
+  .reset-btn:hover{ background:var(--canvas); color:var(--gold); border-color:var(--gold); }
+
+  #combo-count{
+    font-size:.86rem;
+    color:var(--ink-soft);
+    white-space:nowrap;
+  }
+  #combo-count strong{ color:var(--ink); }
+
+  .table-wrap{
+    overflow-x:auto;
+    border:1px solid var(--line);
+    border-radius:var(--radius-sm);
+  }
+  table.combo-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:.86rem;
+    min-width:760px;
+  }
+  table.combo-table thead th{
+    position:sticky;
+    top:0;
+    background:var(--canvas);
+    color:var(--ink-soft);
+    text-align:left;
+    font-size:.68rem;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    padding:10px 12px;
+    border-bottom:2px solid var(--line);
+    white-space:nowrap;
+    cursor:pointer;
+    user-select:none;
+  }
+  table.combo-table thead th:hover{ color:var(--gold); }
+  table.combo-table thead th.day-col, table.combo-table thead th.tot-col{ text-align:center; }
+  table.combo-table thead th .sort-ic{ opacity:.5; font-size:.65rem; margin-left:3px; }
+  table.combo-table tbody td{
+    padding:9px 12px;
+    border-bottom:1px solid var(--line);
+    vertical-align:middle;
+  }
+  table.combo-table tbody tr:last-child td{ border-bottom:none; }
+  table.combo-table tbody tr:hover{ background:var(--canvas); }
+  table.combo-table td.day-col{ text-align:center; color:var(--ink-soft); }
+  table.combo-table td.day-col.has-lesson{ color:var(--ink); font-weight:700; }
+  table.combo-table td.tot-col{
+    text-align:center;
+    font-weight:700;
+    color:var(--gold);
+  }
+  .indirizzo-none{ color:var(--ink-soft); font-style:italic; }
+  .lang-chip{
+    display:inline-block;
+    font-size:.72rem;
+    background:var(--canvas);
+    border:1px solid var(--line);
+    color:var(--ink);
+    padding:1px 8px;
+    border-radius:999px;
+    margin:1px 3px 1px 0;
+    white-space:nowrap;
+  }
+  .open-cal-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:.78rem;
+    font-weight:600;
+    color:var(--link);
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:999px;
+    padding:5px 11px;
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .open-cal-btn:hover{ background:var(--gold-soft); color:var(--gold); border-color:var(--gold); }
+
+  .placeholder{
+    text-align:center;
+    padding:40px 16px;
+    color:var(--ink-soft);
+    font-size:.92rem;
+  }
+
+  footer{
+    text-align:center;
+    font-size:.76rem;
+    color:var(--ink-soft);
+    padding:26px 20px 34px;
+    border-top:1px solid var(--line);
+    margin-top:6px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-version">panoramica</div>
+  <div class="header-inner">
+    <div class="crest" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#D2AE64" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="5" width="18" height="16" rx="2"></rect>
+        <path d="M3 9.5h18"></path>
+        <path d="M8 3v4M16 3v4"></path>
+        <path d="M7.5 13.5h3M13.5 13.5h3M7.5 17h3M13.5 17h3"></path>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1>Panoramica Lezioni per Giorno</h1>
+      <p>Strumento per la segreteria · A.A. 2026/2027</p>
+    </div>
+  </div>
+</header>
+
+<main>
+  <a class="back-link" href="index.html">← Torna al calendario studenti</a>
+
+  <section class="panel">
+    <h2 class="panel-title">Cos'è questa pagina</h2>
+    <p style="margin:0; font-size:.9rem; color:var(--ink-soft);">
+      Per ogni combinazione possibile di Anno di corso, Indirizzo e Lingue (esattamente come la sceglierebbe
+      uno studente nel calendario) questa pagina mostra quante lezioni cadono in ciascun giorno della settimana.
+      Utile per individuare rapidamente giornate molto cariche o vuote. I filtri qui sotto non limitano l'elenco
+      generato (che resta sempre completo): servono solo per trovare più in fretta le righe che interessano.
+      Cliccando su "Apri calendario" per una riga si apre, in una nuova scheda, lo stesso calendario che vedrebbe
+      lo studente con quel profilo.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2 class="panel-title">Filtra la tabella</h2>
+    <div id="banner-slot"></div>
+    <div class="filters">
+      <div class="field">
+        <label for="f-anno">Anno di corso</label>
+        <select id="f-anno"><option value="">Tutti</option></select>
+      </div>
+      <div class="field">
+        <label for="f-indirizzo">Indirizzo</label>
+        <select id="f-indirizzo"><option value="">Tutti</option></select>
+      </div>
+      <div class="field">
+        <label for="f-lingua">Lingua</label>
+        <select id="f-lingua"><option value="">Tutte</option></select>
+      </div>
+      <div class="field">
+        <button type="button" class="reset-btn" id="reset-filters">Reimposta filtri</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panel-title-row">
+      <h2 class="panel-title">Combinazioni e lezioni per giorno</h2>
+      <div id="combo-count"></div>
+    </div>
+    <div id="table-slot">
+      <p class="placeholder">Caricamento dati in corso…</p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  Dati aggiornati direttamente dalla segreteria didattica — stessa fonte del calendario studenti.
+</footer>
+
+<script src="data-core.js"></script>
+<script>
+/* =========================================================================
+   Questa pagina riusa la stessa configurazione/dati di index.html tramite
+   data-core.js (stesso GOOGLE_SHEET_ID/GID, stessi dati di fallback). Non
+   c'è nulla da configurare qui.
+   ========================================================================= */
+
+let COURSES = [];
+let ALL_COMBOS = [];   // combinazioni generate + conteggi già calcolati
+let sortState = { key: 'anno', dir: 1 };
+
+const bannerSlot = document.getElementById('banner-slot');
+const tableSlot = document.getElementById('table-slot');
+const comboCountEl = document.getElementById('combo-count');
+const fAnno = document.getElementById('f-anno');
+const fIndirizzo = document.getElementById('f-indirizzo');
+const fLingua = document.getElementById('f-lingua');
+
+function showBanner(html){ bannerSlot.innerHTML = `<div class="banner">${html}</div>`; }
+function clearBanner(){ bannerSlot.innerHTML = ''; }
+
+/* ---------- helper locali (agiscono sulla COURSES di questa pagina) ---------- */
+function coursesForAnno(anno){ return COURSES.filter(c => c.anno === anno); }
+function needsIndirizzo(anno){ return coursesForAnno(anno).some(c => (c.indirizzi || []).length > 0); }
+function livelliDisponibili(anno, lingua){
+  return uniqueSorted(coursesForAnno(anno).filter(c => c.lingua === lingua && c.livello).map(c => c.livello));
+}
+
+/* ---------- generazione combinazioni: stessa identica logica di filtraggio
+   usata da index.html (vedi render() lì), applicata a TUTTE le combinazioni
+   Anno × Indirizzo × Lingue realmente selezionabili nel calendario ---------- */
+function combinationsIndices(n, k){
+  const result = [];
+  const combo = [];
+  (function backtrack(start){
+    if (combo.length === k){ result.push(combo.slice()); return; }
+    for (let i = start; i < n; i++){ combo.push(i); backtrack(i + 1); combo.pop(); }
+  })(0);
+  return result;
+}
+function cartesianProduct(arrays){
+  return arrays.reduce((acc, arr) => {
+    const out = [];
+    for (const a of acc) for (const v of arr) out.push([...a, v]);
+    return out;
+  }, [[]]);
+}
+
+function buildCombos(){
+  const combos = [];
+  for (const anno of ANNO_ORDER){
+    const list = coursesForAnno(anno);
+    if (list.length === 0) continue;
+    const hasInd = needsIndirizzo(anno);
+    const indirizzoOptions = hasInd
+      ? uniqueSorted(list.flatMap(c => c.indirizzi || []))
+      : [null];
+    const availableLangs = uniqueSorted(list.map(c => c.lingua).filter(Boolean));
+    const langVariantOptions = availableLangs.map(lang => {
+      const livelli = livelliDisponibili(anno, lang);
+      return livelli.length > 1
+        ? livelli.map(lv => ({ lang, livello: lv }))
+        : [{ lang, livello: null }];
+    });
+
+    for (const indirizzo of indirizzoOptions){
+      // Quante lingue segue lo studente per questa combinazione: identico a
+      // desiredSlotCount() in index.html. Per gli anni senza indirizzo (oggi
+      // solo il Terzo Anno) non c'è modo di saperlo a priori, quindi vengono
+      // generate sia le combinazioni da 2 che quelle da 3 lingue.
+      const counts = hasInd ? [indirizzo === INDIRIZZO_TRE_LINGUE ? 3 : 2] : [2, 3];
+      for (const count of counts){
+        if (availableLangs.length < count) continue;
+        for (const idxCombo of combinationsIndices(availableLangs.length, count)){
+          const variantGroups = idxCombo.map(i => langVariantOptions[i]);
+          for (const picked of cartesianProduct(variantGroups)){
+            combos.push({ anno, indirizzo, langs: picked });
+          }
+        }
+      }
+    }
+  }
+  return combos;
+}
+
+function matchesForCombo(combo){
+  const selectedLangs = combo.langs.map(v => v.lang);
+  const livelloByLang = {};
+  combo.langs.forEach(v => { livelloByLang[v.lang] = v.livello; });
+  return coursesForAnno(combo.anno).filter(c => {
+    const matchIndirizzo = !c.indirizzi || (combo.indirizzo && c.indirizzi.includes(combo.indirizzo));
+    let matchLingua;
+    if (c.lingua){
+      matchLingua = selectedLangs.includes(c.lingua) && (!c.livello || c.livello === livelloByLang[c.lingua]);
+    } else {
+      matchLingua = true;
+    }
+    return matchIndirizzo && matchLingua;
+  });
+}
+
+function langsLabel(combo){
+  return combo.langs.map(v => v.lang + (v.livello ? ` (${v.livello})` : '')).join(' + ');
+}
+
+function buildCalendarUrl(combo){
+  const params = new URLSearchParams();
+  params.set('anno', combo.anno);
+  if (combo.indirizzo) params.set('indirizzo', combo.indirizzo);
+  if (!needsIndirizzo(combo.anno)) params.set('numlingue', String(combo.langs.length));
+  combo.langs.forEach((v, i) => {
+    params.set('lingua' + (i + 1), v.lang);
+    if (v.livello) params.set('livello' + (i + 1), v.livello);
+  });
+  return 'index.html?' + params.toString();
+}
+
+/* ---------- calcolo righe (combinazione + conteggi per giorno) ---------- */
+function computeRows(){
+  return ALL_COMBOS.map(combo => {
+    const matches = matchesForCombo(combo);
+    const byDay = {};
+    for (const g of GIORNI) byDay[g] = 0;
+    for (const m of matches) byDay[m.giorno] = (byDay[m.giorno] || 0) + 1;
+    return {
+      combo,
+      anno: combo.anno,
+      indirizzo: combo.indirizzo || '',
+      langsLabel: langsLabel(combo),
+      byDay,
+      totale: matches.length,
+      url: buildCalendarUrl(combo),
+    };
+  });
+}
+
+let ROWS = [];
+
+/* ---------- filtri ---------- */
+function populateFilters(){
+  const anni = uniqueSorted(ALL_COMBOS.map(c => c.anno)).sort((a,b)=>ANNO_ORDER.indexOf(a)-ANNO_ORDER.indexOf(b));
+  fAnno.innerHTML = '<option value="">Tutti</option>' + anni.map(a=>`<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
+
+  const indirizzi = uniqueSorted(ALL_COMBOS.map(c => c.indirizzo).filter(Boolean));
+  fIndirizzo.innerHTML = '<option value="">Tutti</option>' + indirizzi.map(i=>`<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
+
+  const lingue = uniqueSorted(ALL_COMBOS.flatMap(c => c.langs.map(v=>v.lang)));
+  fLingua.innerHTML = '<option value="">Tutte</option>' + lingue.map(l=>`<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
+}
+
+function filteredRows(){
+  const anno = fAnno.value, indirizzo = fIndirizzo.value, lingua = fLingua.value;
+  return ROWS.filter(r =>
+    (!anno || r.anno === anno) &&
+    (!indirizzo || r.indirizzo === indirizzo) &&
+    (!lingua || r.combo.langs.some(v => v.lang === lingua))
+  );
+}
+
+/* ---------- ordinamento ---------- */
+const SORT_LABELS = { anno:'Anno', indirizzo:'Indirizzo', lingue:'Lingue', tot:'Totale' };
+function sortRows(rows){
+  const { key, dir } = sortState;
+  const sorted = rows.slice();
+  sorted.sort((a,b) => {
+    let av, bv;
+    if (key === 'anno'){
+      av = ANNO_ORDER.indexOf(a.anno); bv = ANNO_ORDER.indexOf(b.anno);
+      if (av !== bv) return (av - bv) * dir;
+      av = a.indirizzo; bv = b.indirizzo;
+      if (av !== bv) return av.localeCompare(bv, 'it') * dir;
+      return a.langsLabel.localeCompare(b.langsLabel, 'it') * dir;
+    }
+    if (key === 'indirizzo'){ av = a.indirizzo; bv = b.indirizzo; return (av.localeCompare(bv, 'it') || a.langsLabel.localeCompare(b.langsLabel,'it')) * dir; }
+    if (key === 'lingue'){ return a.langsLabel.localeCompare(b.langsLabel, 'it') * dir; }
+    if (key === 'tot'){ return (a.totale - b.totale) * dir; }
+    if (GIORNI.includes(key)){ return (a.byDay[key] - b.byDay[key]) * dir; }
+    return 0;
+  });
+  return sorted;
+}
+
+function setSort(key){
+  if (sortState.key === key){ sortState.dir *= -1; }
+  else { sortState = { key, dir: 1 }; }
+  renderTable();
+}
+
+/* ---------- rendering tabella ---------- */
+function renderTable(){
+  const rows = sortRows(filteredRows());
+  comboCountEl.innerHTML = `<strong>${rows.length}</strong> combinazion${rows.length === 1 ? 'e' : 'i'} su ${ROWS.length} totali`;
+
+  if (rows.length === 0){
+    tableSlot.innerHTML = '<p class="placeholder">Nessuna combinazione corrisponde ai filtri selezionati.</p>';
+    return;
+  }
+
+  const sortIc = (key) => sortState.key === key ? (sortState.dir === 1 ? '▲' : '▼') : '';
+
+  let html = '<div class="table-wrap"><table class="combo-table"><thead><tr>';
+  html += `<th data-sort="anno">Anno <span class="sort-ic">${sortIc('anno')}</span></th>`;
+  html += `<th data-sort="indirizzo">Indirizzo <span class="sort-ic">${sortIc('indirizzo')}</span></th>`;
+  html += `<th data-sort="lingue">Lingue <span class="sort-ic">${sortIc('lingue')}</span></th>`;
+  for (const g of GIORNI){
+    html += `<th class="day-col" data-sort="${g}">${g.slice(0,3)} <span class="sort-ic">${sortIc(g)}</span></th>`;
+  }
+  html += `<th class="tot-col" data-sort="tot">Tot. <span class="sort-ic">${sortIc('tot')}</span></th>`;
+  html += `<th></th>`;
+  html += '</tr></thead><tbody>';
+
+  for (const r of rows){
+    html += '<tr>';
+    html += `<td>${escapeHtml(r.anno)}</td>`;
+    html += `<td>${r.indirizzo ? escapeHtml(r.indirizzo) : '<span class="indirizzo-none">— nessuno —</span>'}</td>`;
+    html += `<td>${r.combo.langs.map(v => `<span class="lang-chip">${escapeHtml(v.lang)}${v.livello ? ' · ' + escapeHtml(v.livello) : ''}</span>`).join('')}</td>`;
+    for (const g of GIORNI){
+      const n = r.byDay[g];
+      html += `<td class="day-col${n > 0 ? ' has-lesson' : ''}">${n || '–'}</td>`;
+    }
+    html += `<td class="tot-col">${r.totale}</td>`;
+    html += `<td><a class="open-cal-btn" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Apri calendario →</a></td>`;
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  tableSlot.innerHTML = html;
+
+  tableSlot.querySelectorAll('th[data-sort]').forEach(th => {
+    th.addEventListener('click', () => setSort(th.dataset.sort));
+  });
+}
+
+fAnno.addEventListener('change', renderTable);
+fIndirizzo.addEventListener('change', renderTable);
+fLingua.addEventListener('change', renderTable);
+document.getElementById('reset-filters').addEventListener('click', () => {
+  fAnno.value = ''; fIndirizzo.value = ''; fLingua.value = '';
+  renderTable();
+});
+
+/* ---------------- Caricamento dati (stessa fonte del calendario studenti) ---------------- */
+async function init(){
+  clearBanner();
+  tableSlot.innerHTML = '<p class="placeholder">Caricamento dati in corso…</p>';
+  const result = await loadCourseData(12000);
+  COURSES = result.courses;
+
+  if (result.source === 'no-config'){
+    showBanner(`<div>⚠️ <strong>Nessuna sorgente dati online configurata.</strong> Vengono mostrati i dati salvati nel codice (aggiornati al ${FALLBACK_TIMESTAMP}).</div>`);
+  } else if (result.source === 'error'){
+    const errText = (result.error && result.error.message) ? String(result.error.message).replace(/</g,'&lt;') : 'Errore sconosciuto';
+    showBanner(`<div>⚠️ <strong>Impossibile aggiornare i dati dal foglio online in questo momento.</strong>
+      Vengono mostrati i dati salvati nella pagina (aggiornati al ${FALLBACK_TIMESTAMP}).
+      <button id="reload-btn">Riprova ora</button>
+      <div style="margin-top:6px; font-size:.72rem; opacity:.75;">Dettaglio tecnico: ${errText}</div></div>`);
+    const btn = document.getElementById('reload-btn');
+    if (btn) btn.addEventListener('click', init);
+  } else {
+    clearBanner();
+  }
+
+  ALL_COMBOS = buildCombos();
+  ROWS = computeRows();
+  populateFilters();
+  renderTable();
+}
+
+init();
+</script>
+
+</body>
+</html>
