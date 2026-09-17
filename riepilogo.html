@@ -974,17 +974,56 @@ const fLinguaSelects = [
 const sfogliaTable = createComboTable(document.getElementById('table-slot'), document.getElementById('combo-count'));
 let SFOGLIA_ROWS = [];
 
-function populateFilters(){
-  const anni = uniqueSorted(ALL_COMBOS.map(c => c.anno)).sort((a, b) => ANNO_ORDER.indexOf(a) - ANNO_ORDER.indexOf(b));
-  fAnno.innerHTML = '<option value="">Tutti</option>' + anni.map(a => `<option value="${escapeHtml(a)}">${escapeHtml(a)}</option>`).join('');
-  const indirizzi = uniqueSorted(ALL_COMBOS.map(c => c.indirizzo).filter(Boolean));
-  fIndirizzo.innerHTML = '<option value="">Tutti</option>' + indirizzi.map(i => `<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
-  const lingue = uniqueSorted(ALL_COMBOS.flatMap(c => c.langs.map(v => v.lang)));
-  const options = '<option value="">Tutte</option>' + lingue.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
-  for (const sel of fLinguaSelects) sel.innerHTML = options;
+/* Rimpiazza le opzioni di un <select>, mantenendo il valore corrente se è
+   ancora tra quelli disponibili, altrimenti riportandolo su "Tutti/Tutte". */
+function rebuildSelect(selectEl, values, allLabel, previousValue){
+  const keep = values.includes(previousValue) ? previousValue : '';
+  selectEl.innerHTML = `<option value="">${allLabel}</option>` +
+    values.map(v => `<option value="${escapeHtml(v)}">${escapeHtml(v)}</option>`).join('');
+  selectEl.value = keep;
+}
+
+/* Ricalcola le opzioni di CIASCUN filtro in base al valore ATTUALE di tutti
+   gli altri filtri (mai in base a sé stesso), così ogni tendina mostra solo
+   le opzioni che portano ad almeno una combinazione reale. Es.: se non
+   esistono corsi di "Criminologia investigativa e forense" al Primo Anno in
+   Arabo, "Arabo" non compare più nel filtro Lingua una volta selezionati
+   Primo Anno + quell'indirizzo. */
+function updateFilterOptions(){
+  const cur = {
+    anno: fAnno.value,
+    indirizzo: fIndirizzo.value,
+    lingue: fLinguaSelects.map(s => s.value),
+  };
+  const attiveLingue = cur.lingue.filter(Boolean);
+
+  const annoOpts = uniqueSorted(ALL_COMBOS.filter(c =>
+    (!cur.indirizzo || c.indirizzo === cur.indirizzo) &&
+    attiveLingue.every(l => c.langs.some(v => v.lang === l))
+  ).map(c => c.anno)).sort((a, b) => ANNO_ORDER.indexOf(a) - ANNO_ORDER.indexOf(b));
+
+  const indOpts = uniqueSorted(ALL_COMBOS.filter(c =>
+    (!cur.anno || c.anno === cur.anno) &&
+    attiveLingue.every(l => c.langs.some(v => v.lang === l))
+  ).map(c => c.indirizzo).filter(Boolean));
+
+  const linguaOptsList = fLinguaSelects.map((sel, i) => {
+    const altreLingue = cur.lingue.filter((v, j) => j !== i && v);
+    const matching = ALL_COMBOS.filter(c =>
+      (!cur.anno || c.anno === cur.anno) &&
+      (!cur.indirizzo || c.indirizzo === cur.indirizzo) &&
+      altreLingue.every(l => c.langs.some(v => v.lang === l))
+    );
+    return uniqueSorted(matching.flatMap(c => c.langs.map(v => v.lang)));
+  });
+
+  rebuildSelect(fAnno, annoOpts, 'Tutti', cur.anno);
+  rebuildSelect(fIndirizzo, indOpts, 'Tutti', cur.indirizzo);
+  fLinguaSelects.forEach((sel, i) => rebuildSelect(sel, linguaOptsList[i], 'Tutte', cur.lingue[i]));
 }
 
 function renderSfoglia(){
+  updateFilterOptions();
   const anno = fAnno.value, indirizzo = fIndirizzo.value;
   // Ogni filtro lingua non vuoto deve essere presente nella combinazione: le
   // condizioni si combinano con "e" (indipendentemente dall'ordine/posizione),
@@ -1210,8 +1249,7 @@ async function init(){
 
   ALL_COMBOS = buildCombos();
   SFOGLIA_ROWS = computeRows(ALL_COMBOS);
-  populateFilters();
-  renderSfoglia();
+  renderSfoglia(); // popola anche le opzioni dei filtri (updateFilterOptions)
 }
 
 init();
