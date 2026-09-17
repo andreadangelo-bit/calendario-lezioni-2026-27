@@ -393,13 +393,22 @@
   table.combo-table tbody tr:last-child td{ border-bottom:none; }
   table.combo-table tbody tr:hover{ background:var(--canvas); }
   table.combo-table td.day-col{ text-align:center; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
-  table.combo-table td.day-col.has-lesson{ color:var(--ink); font-weight:600; }
+  table.combo-table td.day-col.has-lesson{ color:var(--ink); }
+  table.combo-table .cell-count{ font-weight:600; font-size:.86rem; line-height:1.3; }
+  table.combo-table .cell-hours{
+    font-style:italic;
+    font-weight:400;
+    font-size:.72rem;
+    color:var(--ink-soft);
+    line-height:1.3;
+  }
   table.combo-table td.tot-col{
     text-align:center;
-    font-weight:700;
     color:var(--gold);
     white-space:nowrap;
   }
+  table.combo-table td.tot-col .cell-count{ color:var(--gold); }
+  table.combo-table td.tot-col .cell-hours{ color:var(--gold); opacity:.75; }
   .indirizzo-none{ color:var(--ink-soft); font-style:italic; }
   .lang-chip{
     display:inline-block;
@@ -654,14 +663,22 @@
           <select id="f-indirizzo"><option value="">Tutti</option></select>
         </div>
         <div class="field">
-          <label for="f-lingua">Lingua</label>
-          <select id="f-lingua"><option value="">Tutte</option></select>
+          <label for="f-lingua-1">Lingua</label>
+          <select id="f-lingua-1"><option value="">Tutte</option></select>
+        </div>
+        <div class="field">
+          <label for="f-lingua-2">e anche lingua</label>
+          <select id="f-lingua-2"><option value="">Tutte</option></select>
+        </div>
+        <div class="field">
+          <label for="f-lingua-3">e anche lingua</label>
+          <select id="f-lingua-3"><option value="">Tutte</option></select>
         </div>
         <div class="field">
           <button type="button" class="reset-btn" id="reset-filters">Reimposta filtri</button>
         </div>
       </div>
-      <p class="field-hint">I filtri servono solo a cercare più in fretta: l'elenco generato resta sempre completo.</p>
+      <p class="field-hint">I filtri servono solo a cercare più in fretta: l'elenco generato resta sempre completo. I tre filtri "lingua" si combinano: selezionane più di uno per trovare la combinazione esatta che include tutte le lingue scelte (l'ordine non conta).</p>
     </section>
 
     <section class="panel">
@@ -922,10 +939,12 @@ function createComboTable(containerEl, countEl){
       html += `<td>${r.combo.langs.map(v => `<span class="lang-chip">${escapeHtml(v.lang)}${v.livello ? ' · ' + escapeHtml(v.livello) : ''}</span>`).join('')}</td>`;
       for (const g of GIORNI){
         const d = r.byDay[g];
-        html += `<td class="day-col${d.count > 0 ? ' has-lesson' : ''}">${d.count > 0 ? `${d.count} · ${d.hours}h${d.unknown ? '*' : ''}` : '–'}</td>`;
+        html += `<td class="day-col${d.count > 0 ? ' has-lesson' : ''}">${d.count > 0
+          ? `<div class="cell-count">${d.count}</div><div class="cell-hours">${d.hours}h${d.unknown ? '*' : ''}</div>`
+          : '–'}</td>`;
       }
-      html += `<td class="tot-col">${r.totale}</td>`;
-      html += `<td class="tot-col">${r.totOre}h${r.totUnknown ? '*' : ''}</td>`;
+      html += `<td class="tot-col"><div class="cell-count">${r.totale}</div></td>`;
+      html += `<td class="tot-col"><div class="cell-hours">${r.totOre}h${r.totUnknown ? '*' : ''}</div></td>`;
       html += `<td><a class="open-cal-btn" href="${escapeHtml(r.url)}" target="_blank" rel="noopener">Apri calendario →</a></td>`;
       html += '</tr>';
     }
@@ -947,7 +966,11 @@ function createComboTable(containerEl, countEl){
 /* ==================== MODALITÀ: SFOGLIA TUTTE ==================== */
 const fAnno = document.getElementById('f-anno');
 const fIndirizzo = document.getElementById('f-indirizzo');
-const fLingua = document.getElementById('f-lingua');
+const fLinguaSelects = [
+  document.getElementById('f-lingua-1'),
+  document.getElementById('f-lingua-2'),
+  document.getElementById('f-lingua-3'),
+];
 const sfogliaTable = createComboTable(document.getElementById('table-slot'), document.getElementById('combo-count'));
 let SFOGLIA_ROWS = [];
 
@@ -957,23 +980,29 @@ function populateFilters(){
   const indirizzi = uniqueSorted(ALL_COMBOS.map(c => c.indirizzo).filter(Boolean));
   fIndirizzo.innerHTML = '<option value="">Tutti</option>' + indirizzi.map(i => `<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
   const lingue = uniqueSorted(ALL_COMBOS.flatMap(c => c.langs.map(v => v.lang)));
-  fLingua.innerHTML = '<option value="">Tutte</option>' + lingue.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
+  const options = '<option value="">Tutte</option>' + lingue.map(l => `<option value="${escapeHtml(l)}">${escapeHtml(l)}</option>`).join('');
+  for (const sel of fLinguaSelects) sel.innerHTML = options;
 }
 
 function renderSfoglia(){
-  const anno = fAnno.value, indirizzo = fIndirizzo.value, lingua = fLingua.value;
+  const anno = fAnno.value, indirizzo = fIndirizzo.value;
+  // Ogni filtro lingua non vuoto deve essere presente nella combinazione: le
+  // condizioni si combinano con "e" (indipendentemente dall'ordine/posizione),
+  // così si può individuare la combinazione esatta con più lingue insieme.
+  const richiedeLingue = fLinguaSelects.map(s => s.value).filter(Boolean);
   const filtered = SFOGLIA_ROWS.filter(r =>
     (!anno || r.anno === anno) &&
     (!indirizzo || r.indirizzo === indirizzo) &&
-    (!lingua || r.combo.langs.some(v => v.lang === lingua))
+    richiedeLingue.every(lingua => r.combo.langs.some(v => v.lang === lingua))
   );
   sfogliaTable.setRows(filtered);
 }
 fAnno.addEventListener('change', renderSfoglia);
 fIndirizzo.addEventListener('change', renderSfoglia);
-fLingua.addEventListener('change', renderSfoglia);
+for (const sel of fLinguaSelects) sel.addEventListener('change', renderSfoglia);
 document.getElementById('reset-filters').addEventListener('click', () => {
-  fAnno.value = ''; fIndirizzo.value = ''; fLingua.value = '';
+  fAnno.value = ''; fIndirizzo.value = '';
+  for (const sel of fLinguaSelects) sel.value = '';
   renderSfoglia();
 });
 
